@@ -1,5 +1,5 @@
 package model;
-import model.EtatProjet;
+import model.Enum.EtatProjet;
 
 public class Projet {
     private int id;

@@ -1,14 +1,18 @@
 package repository;
 
 import model.MainOeuvre;
-
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public interface MainOeuvreRepository {
-    void addMainOeuvre(MainOeuvre mainOeuvre) throws Exception;
-    Optional<MainOeuvre> getMainOeuvreById(int id) throws Exception;
-    List<MainOeuvre> getAllMainOeuvres() throws Exception;
-    void updateMainOeuvre(MainOeuvre mainOeuvre) throws Exception;
-    void deleteMainOeuvre(int id) throws Exception;
+
+    void insertMainOeuvre(MainOeuvre mainOeuvre) throws SQLException;
+
+    MainOeuvre selectMainOeuvre(int id) throws SQLException;
+
+    List<MainOeuvre> selectAllMainOeuvres() throws SQLException;
+
+    boolean updateMainOeuvre(MainOeuvre mainOeuvre) throws SQLException;
+
+    boolean deleteMainOeuvre(int id) throws SQLException;
 }

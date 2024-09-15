@@ -5,10 +5,25 @@ import model.Client;
 import java.util.List;
 import java.util.Optional;
 
+
+
+
+import model.Client;
+import java.sql.SQLException;
+import java.util.List;
+
 public interface ClientRepository {
-    void addClient(Client client) throws Exception;
-    Optional<Client> getClientById(int id) throws Exception;
-    List<Client> getAllClients() throws Exception;
-    void updateClient(Client client) throws Exception;
-    void deleteClient(int id) throws Exception;
+
+    void insertClient(Client client) throws SQLException;
+
+    Client selectClient(int id) throws SQLException;
+
+    List<Client> selectAllClients() throws SQLException;
+
+    boolean updateClient(Client client) throws SQLException;
+
+    boolean deleteClient(int id) throws SQLException;
+
+    // Si vous avez besoin de cette méthode
+
 }

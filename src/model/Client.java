@@ -16,6 +16,8 @@ public class Client {
         this.estProfessionnel = estProfessionnel;
     }
 
+
+
     // Getters and Setters
     public int getId() {
         return id;

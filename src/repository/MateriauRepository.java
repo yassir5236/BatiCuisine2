@@ -1,14 +1,18 @@
 package repository;
 
 import model.Materiau;
-
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public interface MateriauRepository {
-    void addMateriau(Materiau materiau) throws Exception;
-    Optional<Materiau> getMateriauById(int id) throws Exception;
-    List<Materiau> getAllMateriaux() throws Exception;
-    void updateMateriau(Materiau materiau) throws Exception;
-    void deleteMateriau(int id) throws Exception;
+
+    void insertMateriau(Materiau materiau) throws SQLException;
+
+    Materiau selectMateriau(int id) throws SQLException;
+
+    List<Materiau> selectAllMateriaux() throws SQLException;
+
+    boolean updateMateriau(Materiau materiau) throws SQLException;
+
+    boolean deleteMateriau(int id) throws SQLException;
 }

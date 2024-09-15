@@ -1,14 +1,18 @@
 package repository;
 
 import model.Devis;
-
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public interface DevisRepository {
-    void addDevis(Devis devis) throws Exception;
-    Optional<Devis> getDevisById(int id) throws Exception;
-    List<Devis> getAllDevis() throws Exception;
-    void updateDevis(Devis devis) throws Exception;
-    void deleteDevis(int id) throws Exception;
+
+    void insertDevis(Devis devis) throws SQLException;
+
+    Devis selectDevis(int id) throws SQLException;
+
+    List<Devis> selectAllDevis() throws SQLException;
+
+    boolean updateDevis(Devis devis) throws SQLException;
+
+    boolean deleteDevis(int id) throws SQLException;
 }
