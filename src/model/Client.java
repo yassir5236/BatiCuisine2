@@ -6,15 +6,24 @@ public class Client {
     private String nom;
     private String adresse;
     private String telephone;
-    private boolean estProfessionnel;
+    private boolean est_Professionnel;
 
     public Client(int id, String nom, String adresse, String telephone, boolean estProfessionnel) {
         this.id = id;
         this.nom = nom;
         this.adresse = adresse;
         this.telephone = telephone;
-        this.estProfessionnel = estProfessionnel;
+        this.est_Professionnel = estProfessionnel;
     }
+
+    public Client( String nom, String adresse, String telephone, boolean estProfessionnel) {
+
+        this.nom = nom;
+        this.adresse = adresse;
+        this.telephone = telephone;
+        this.est_Professionnel = estProfessionnel;
+    }
+
 
 
 
@@ -52,11 +61,11 @@ public class Client {
     }
 
     public boolean isEstProfessionnel() {
-        return estProfessionnel;
+        return est_Professionnel;
     }
 
-    public void setEstProfessionnel(boolean estProfessionnel) {
-        this.estProfessionnel = estProfessionnel;
+    public void setEstProfessionnel(boolean est_Professionnel) {
+        this.est_Professionnel = est_Professionnel;
     }
 
     @Override
@@ -66,7 +75,7 @@ public class Client {
                 ", nom='" + nom + '\'' +
                 ", adresse='" + adresse + '\'' +
                 ", telephone='" + telephone + '\'' +
-                ", estProfessionnel=" + estProfessionnel +
+                ", est_Professionnel=" + est_Professionnel +
                 '}';
     }
 }

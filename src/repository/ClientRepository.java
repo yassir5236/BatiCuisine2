@@ -24,6 +24,5 @@ public interface ClientRepository {
 
     boolean deleteClient(int id) throws SQLException;
 
-    // Si vous avez besoin de cette méthode
 
 }

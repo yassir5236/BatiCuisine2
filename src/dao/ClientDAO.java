@@ -27,6 +27,7 @@ public class ClientDAO implements ClientRepository {
     @Override
     public void insertClient(Client client) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CLIENT_SQL)) {
+
             preparedStatement.setString(1, client.getNom());
             preparedStatement.setString(2, client.getAdresse());
             preparedStatement.setString(3, client.getTelephone());
