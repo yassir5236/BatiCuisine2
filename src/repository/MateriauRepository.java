@@ -8,11 +8,11 @@ public interface MateriauRepository {
 
     void insertMateriau(Materiau materiau) throws SQLException;
 
-    Materiau selectMateriau(int id) throws SQLException;
-
-    List<Materiau> selectAllMateriaux() throws SQLException;
-
-    boolean updateMateriau(Materiau materiau) throws SQLException;
-
-    boolean deleteMateriau(int id) throws SQLException;
+//    Materiau selectMateriau(int id) throws SQLException;
+//
+//    List<Materiau> selectAllMateriaux() throws SQLException;
+//
+//    boolean updateMateriau(Materiau materiau) throws SQLException;
+//
+//    boolean deleteMateriau(int id) throws SQLException;
 }

@@ -1,8 +1,8 @@
-//package service.interfaces;
-//
-//import model.Projet;
-//
-//public interface IProjetService {
-//    void addProjet(Projet projet);
-//
-//}
+package service.interfaces;
+
+import model.Projet;
+
+public interface IProjetService {
+    void addProjet(Projet projet);
+    Projet selectProjetById(int id );
+}

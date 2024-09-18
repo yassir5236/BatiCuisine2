@@ -1,81 +1,115 @@
 package controller;
 
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
+
+import model.Projet;
+
 
 
 import model.Client;
 import model.Enum.TypeComposant;
 import model.Materiau;
+import model.dto.MateriauDto;
 import service.ClientService;
 import service.MateriauService;
+import service.ProjetService;
 
 public class MateriauController {
     private final MateriauService materiauService;
     private final Scanner scanner;
+    private final ProjetService projetService;
 
-    // Constructor to initialize services and scanner
+
     public MateriauController() {
         this.materiauService = new MateriauService();
         this.scanner = new Scanner(System.in);
+        this.projetService= new ProjetService();
     }
+
 
     public void addMateriau() {
         System.out.println("Entrez le nom du matériau");
         String nom = scanner.nextLine();
 
-
-        System.out.println("Entrez le coût unitaire de ce matériau (€/m²:");
+        System.out.println("Entrez le coût unitaire de ce matériau (€/m²):");
         double coutUnitaire = scanner.nextDouble();
-
 
         System.out.println("Entrez la quantité de ce matériau:");
         double quantite = scanner.nextDouble();
 
-
-        System.out.println("Entrez le coût de transport de ce matériau (€)");
+        System.out.println("Entrez le coût de transport de ce matériau (€):");
         double coutTransport = scanner.nextDouble();
 
         System.out.println("Entrez le coefficient de qualité du matériau (1.0 = standard, > 1.0 = haute qualité):");
         double coefficientQuantite = scanner.nextDouble();
 
-        TypeComposant typeComposant=null;
-
         System.out.println("Entrez tauxTVA:");
         double tauxTVA = scanner.nextDouble();
 
-        Materiau materiau = new Materiau(nom, typeComposant,  tauxTVA,  projet,
-         coutUnitaire,  quantite,  coutTransport,  coefficientQuantite);
-        materiauService.ajouterMateriau(materiau);
-        System.out.println("Client added successfully.");
+        scanner.nextLine();
+
+        System.out.println("Entrez le type de composant (MATERIEL, MAIN_DOEUVRE):");
+        String typeComposantStr = scanner.nextLine().toUpperCase();
+
+        TypeComposant typeComposant;
+        try {
+            typeComposant = TypeComposant.valueOf(typeComposantStr);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Type de composant invalide.");
+            return;
+        }
+
+        System.out.println("Entrez l'ID du projet:");
+        int projetId = scanner.nextInt();
+
+        Projet projet = projetService.selectProjetById(projetId);
+        if (projet == null) {
+            System.out.println("Le projet avec l'ID spécifié n'existe pas.");
+            return;
+        }
+
+        final MateriauDto materiauDto = new MateriauDto(
+                nom,
+                typeComposant,
+                tauxTVA,
+                projetId,
+                coutUnitaire,
+                quantite,
+                coutTransport,
+                coefficientQuantite
+        );
+
+        materiauService.ajouterMateriau(materiauDto);
+        System.out.println("Materiau ajouté avec succès.");
     }
 
-//    public void updateClient() {
-//        System.out.println("Enter the ID of the materiau:");
-//        int id = scanner.nextInt();
-//        scanner.nextLine();  // Consume newline
-//
-//        System.out.println("Enter the new name of the materiau:");
-//        String nom = scanner.nextLine();
-//
-//        System.out.println("Enter the new address of the materiau:");
-//        String adresse = scanner.nextLine();
-//
-//        System.out.println("Enter the new telephone number of the materiau:");
-//        String telephone = scanner.nextLine();
-//
-//        System.out.println("Is the materiau a professional (true/false)?");
-//        boolean estProfessionnel = scanner.nextBoolean();
-//
-//        Client materiau = new Client(id, nom, adresse, telephone, estProfessionnel);
-//        boolean updated = materiauService.updateClient(materiau);
-//
-//        if (updated) {
-//            System.out.println("Client updated successfully.");
-//        } else {
-//            System.out.println("Client with ID " + id + " not found.");
-//        }
-//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //    public void getClient() {
 //        System.out.println("Enter the ID of the materiau:");

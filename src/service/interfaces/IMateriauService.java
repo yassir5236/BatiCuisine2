@@ -2,11 +2,12 @@ package service.interfaces;
 import model.Materiau;
 
 import model.Client;
+import model.dto.MateriauDto;
 
 import java.util.List;
 
 public interface IMateriauService {
-    void ajouterMateriau(Materiau Materiau);
+    void ajouterMateriau(MateriauDto materiauDto);
 
 //    boolean updateClient(Client client);
 //

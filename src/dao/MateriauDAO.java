@@ -1,44 +1,52 @@
-//package dao;
-//
-//import model.Materiau;
-//import model.Enum.TypeComposant;
-//import model.Projet;
-//import repository.MateriauRepository;
-//import utils.DatabaseConnection;
-//
-//import java.sql.*;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class MateriauDAO implements MateriauRepository {
-//
-//    private static final String INSERT_MATERIAU_SQL = "INSERT INTO materiau (nom, type_composant, taux_tva, projet_id, cout_unitaire, quantite, cout_transport, coefficient_quantite) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-//    private static final String SELECT_MATERIAU_BY_ID = "SELECT * FROM materiau WHERE id = ?";
-//    private static final String SELECT_ALL_MATERIAUX = "SELECT * FROM materiau";
-//    private static final String UPDATE_MATERIAU_SQL = "UPDATE materiau SET nom = ?, type_composant = ?, taux_tva = ?, projet_id = ?, cout_unitaire = ?, quantite = ?, cout_transport = ?, coefficient_quantite = ? WHERE id = ?";
-//    private static final String DELETE_MATERIAU_SQL = "DELETE FROM materiau WHERE id = ?";
-//
-//    private Connection connection;
-//
-//    public MateriauDAO() {
-//        this.connection = DatabaseConnection.getConnection();
-//    }
-//
-//    @Override
-//    public void insertMateriau(Materiau materiau) throws SQLException {
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_MATERIAU_SQL)) {
-//            preparedStatement.setString(1, materiau.getNom());
-//            preparedStatement.setString(2, materiau.getTypeComposant().name());
-//            preparedStatement.setDouble(3, materiau.getTauxTVA());
-//            preparedStatement.setInt(4, materiau.getProjet().getId());
-//            preparedStatement.setDouble(5, materiau.getCoutUnitaire());
-//            preparedStatement.setDouble(6, materiau.getQuantite());
-//            preparedStatement.setDouble(7, materiau.getCoutTransport());
-//            preparedStatement.setDouble(8, materiau.getCoefficientQuantite());
-//            preparedStatement.executeUpdate();
-//        }
-//    }
-//
+package dao;
+
+import model.Materiau;
+import model.Enum.TypeComposant;
+import model.Projet;
+import repository.MateriauRepository;
+import utils.DatabaseConnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MateriauDAO implements MateriauRepository {
+
+    private static final String INSERT_MATERIAU_SQL = "INSERT INTO materiau (nom, type_composant, taux_tva, projet_id, cout_unitaire, quantite, cout_transport, coefficient_quantite) VALUES (?, ?::type_composant, ?, ?, ?, ?, ?, ?)";
+    private static final String SELECT_MATERIAU_BY_ID = "SELECT * FROM materiau WHERE id = ?";
+    private static final String SELECT_ALL_MATERIAUX = "SELECT * FROM materiau";
+    private static final String UPDATE_MATERIAU_SQL = "UPDATE materiau SET nom = ?, type_composant = ?, taux_tva = ?, projet_id = ?, cout_unitaire = ?, quantite = ?, cout_transport = ?, coefficient_quantite = ? WHERE id = ?";
+    private static final String DELETE_MATERIAU_SQL = "DELETE FROM materiau WHERE id = ?";
+
+    private Connection connection;
+
+    public MateriauDAO() {
+        this.connection = DatabaseConnection.getConnection();
+    }
+
+    public void insertMateriau(Materiau materiau) throws SQLException {
+        // Vérifiez si le projet est null
+        if (materiau.getProjet() == null) {
+            throw new IllegalArgumentException("Le projet associé au matériau ne peut pas être null.");
+        }
+
+        String typeComposantString = (materiau.getTypeComposant() != null) ? materiau.getTypeComposant().name() : null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_MATERIAU_SQL)) {
+            preparedStatement.setString(1, materiau.getNom()); // Assurez-vous que getNom() renvoie une chaîne
+//            preparedStatement.setString(2, materiau.getTypeComposant().name().toLowerCase()); // Convertir l'énum en chaîne et gérer les valeurs null
+            preparedStatement.setString(2, materiau.getTypeComposant().name().substring(0, 1).toUpperCase() + materiau.getTypeComposant().name().substring(1).toLowerCase());
+
+            preparedStatement.setDouble(3, materiau.getTauxTVA()); // Assurez-vous que getTauxTVA() renvoie un double
+            preparedStatement.setInt(4, materiau.getProjet().getId()); // Assurez-vous que getProjet() renvoie un projet avec un ID valide
+            preparedStatement.setDouble(5, materiau.getCoutUnitaire()); // Assurez-vous que getCoutUnitaire() renvoie un double
+            preparedStatement.setDouble(6, materiau.getQuantite()); // Assurez-vous que getQuantite() renvoie un double
+            preparedStatement.setDouble(7, materiau.getCoutTransport()); // Assurez-vous que getCoutTransport() renvoie un double
+            preparedStatement.setDouble(8, materiau.getCoefficientQuantite()); // Assurez-vous que getCoefficientQuantite() renvoie un double
+            preparedStatement.executeUpdate();
+        }
+    }
+
 //    @Override
 //    public Materiau selectMateriau(int id) throws SQLException {
 //        Materiau materiau = null;
@@ -62,7 +70,7 @@
 //        }
 //        return materiau;
 //    }
-//
+
 //    @Override
 //    public List<Materiau> selectAllMateriaux() throws SQLException {
 //        List<Materiau> materiaux = new ArrayList<>();
@@ -84,7 +92,7 @@
 //        }
 //        return materiaux;
 //    }
-//
+
 //    @Override
 //    public boolean updateMateriau(Materiau materiau) throws SQLException {
 //        boolean rowUpdated;
@@ -102,7 +110,7 @@
 //        }
 //        return rowUpdated;
 //    }
-//
+
 //    @Override
 //    public boolean deleteMateriau(int id) throws SQLException {
 //        boolean rowDeleted;
@@ -112,4 +120,4 @@
 //        }
 //        return rowDeleted;
 //    }
-//}
+}

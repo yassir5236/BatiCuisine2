@@ -1,4 +1,5 @@
 import controller.ClientController;
+import controller.MateriauController;
 import model.Projet;
 
 import java.util.Scanner;
@@ -7,13 +8,15 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         ClientController obj = new ClientController();
+        MateriauController obj2 = new MateriauController();
 
 
         System.out.println("===== Menu principale ======");
         System.out.println(" 1 - Créer un nouveau projet");
         System.out.println(" 2 - Afficher les projets existants ");
         System.out.println(" 3 - Calculer le coût d'un projet ");
-        System.out.println(" 4 - Quitter ");
+        System.out.println(" 4 - Ajouter materiau ");
+        System.out.println(" 5 - Quitter ");
 
 
 
@@ -47,6 +50,9 @@ public class Main {
             case 5:
                 obj.getAllClients();
                 break;
+            case 6:
+                obj2.addMateriau();
+                break;
             default:
                 System.out.println("your chose is wronggg");
                 break;
@@ -76,7 +82,7 @@ public class Main {
                 System.out.println("Souhaitez-vous continuer avec ce client ? (y/n) : ");
                 boolean response = sc.nextBoolean();
                 if (response) {
-                    projet.addProjet();
+//                    projet.addProjet();
                 }
                 break;
             case 2:

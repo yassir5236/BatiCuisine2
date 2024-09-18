@@ -1,6 +1,7 @@
 package model.Enum;
 
 public enum TypeComposant {
-    MATÉRIAU,
+    MATERIEL,
     MAIN_DOEUVRE;
+
 }
