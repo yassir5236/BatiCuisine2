@@ -96,4 +96,33 @@ public class ClientDAO implements ClientRepository {
         }
         return rowDeleted;
     }
+
+
+    @Override
+    public Client rechercheClient(String nom) throws SQLException {
+        String query = "select * from client where nom = ?";
+        Client client = null;
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setString(1,nom);
+            ps.executeQuery();
+            ResultSet rs = ps.getResultSet();
+            if (rs.next()) {
+                System.out.println("Client trouvé !");
+                client = new Client(
+                        rs.getString("nom"),
+                        rs.getString("adresse"),
+                        rs.getString("telephone"),
+                        rs.getBoolean("est_professionnel")
+
+                );
+            }else{
+                System.out.println("Client n'existe pas !");
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+
+        }
+        return client;
+    }
 }

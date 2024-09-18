@@ -34,6 +34,8 @@ public class ProjetDAO implements ProjetRepository {
             preparedStatement.setDouble(4, projet.getCoutTotal());
             preparedStatement.setInt(5, projet.getClient().getId());
             preparedStatement.executeUpdate();
+        }catch(SQLException e) {
+            e.printStackTrace();
         }
     }
 

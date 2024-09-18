@@ -105,4 +105,21 @@ public class ClientController {
             System.out.println("No clients found.");
         }
     }
+
+
+    public void recherchClient() {
+        System.out.println("--- Recherche de client existant ---");
+        System.out.println("Entrez le nom du client : ");
+        String nom = scanner.nextLine();
+
+        Client client = clientService.rechercheClient(nom);
+        if (client != null) {
+            System.out.println("Name: " + client.getNom());
+            System.out.println("Address: " + client.getAdresse());
+            System.out.println("Phone: " + client.getTelephone());
+            System.out.println("Professional: " + client.isEstProfessionnel());
+        }
+
+
+    }
 }

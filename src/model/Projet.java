@@ -7,23 +7,27 @@ public class Projet {
     private double margeBeneficiaire;
     private EtatProjet etatProjet;
     private double coutTotal;
+    private float surface;
     private Client client;
 
-    public Projet(int id, String nomProjet, double margeBeneficiaire, EtatProjet etatProjet, double coutTotal, Client client) {
+    public Projet(int id, String nomProjet, double margeBeneficiaire, EtatProjet etatProjet, double coutTotal, Client client, float surface) {
         this.id = id;
         this.nomProjet = nomProjet;
         this.margeBeneficiaire = margeBeneficiaire;
         this.etatProjet = etatProjet;
         this.coutTotal = coutTotal;
         this.client = client;
+        this.surface = surface;
     }
 
-    public Projet(String nomProjet, double margeBeneficiaire, EtatProjet etatProjet, double coutTotal, Client client) {
+    public Projet(String nomProjet, double margeBeneficiaire, EtatProjet etatProjet, double coutTotal, Client client , float surface) {
         this.nomProjet = nomProjet;
         this.margeBeneficiaire = margeBeneficiaire;
         this.etatProjet = etatProjet;
         this.coutTotal = coutTotal;
         this.client = client;
+        this.surface = surface;
+
     }
 
     // Getters and Setters
@@ -73,6 +77,14 @@ public class Projet {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public float getSurface() {
+        return surface;
+    }
+
+    public void setSurface(float surface) {
+        this.surface = surface;
     }
 
     @Override

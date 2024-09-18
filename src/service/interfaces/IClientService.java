@@ -14,4 +14,6 @@ public interface IClientService {
     boolean deleteClient(int id);
 
     List<Client> getAllClients();
+
+    Client rechercheClient(String nom);
 }
