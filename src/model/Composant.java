@@ -26,6 +26,12 @@ public class Composant {
         this.projet = projet;
     }
 
+    public Composant(String nom,  double tauxTVA, Projet projet) {
+        this.nom = nom;
+        this.tauxTVA = tauxTVA;
+        this.projet = projet;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;

@@ -7,6 +7,7 @@ import service.interfaces.IClientService;
 import java.sql.SQLException;
 import java.util.List;
 
+
 public class ClientService implements IClientService {
     private final ClientDAO clientDAO;
 
@@ -62,4 +63,17 @@ public class ClientService implements IClientService {
             return null;
         }
     }
+
+    @Override
+    public Client rechercheClient(String nom){
+        Client client = null;
+        try{
+            client = clientDAO.rechercheClient(nom);
+
+        }catch(SQLException e){
+            System.out.println("Error fetching recherche client: " + e.getMessage());
+        }
+        return client;
+    }
+
 }

@@ -26,6 +26,11 @@ public class Materiau extends Composant {
         this.coefficientQuantite = coefficientQuantite;
     }
 
+
+
+
+
+
     // Getters and Setters
     public double getCoutUnitaire() {
         return coutUnitaire;
