@@ -1,6 +1,8 @@
 package service;
 
+import dao.MainOeuvreDAO;
 import dao.ProjetDAO;
+import model.MainOeuvre;
 import model.Materiau;
 import model.Projet;
 import model.dto.MainDoeuvreDto;
@@ -27,9 +29,9 @@ public class MainOeuvreService implements IMainOeuvreService {
     public void ajouterMainOeuvre(MainDoeuvreDto mainDoeuvreDto) {
         Projet projet = projetService.selectProjetById(mainDoeuvreDto.projetId());
 
-        Materiau materiau = new Materiau(mainDoeuvreDto.nom() , mainDoeuvreDto.typeComposant() ,mainDoeuvreDto.tauxTVA() ,projet,mainDoeuvreDto.coutUnitaire(),mainDoeuvreDto.quantite(),mainDoeuvreDto.coutTransport() ,mainDoeuvreDto.coefficientQuantite());
+        MainOeuvre mainOeuvre = new MainOeuvre(mainDoeuvreDto.nom() , mainDoeuvreDto.typeComposant() ,mainDoeuvreDto.tauxTVA() ,projet ,mainDoeuvreDto.tauxHoraire() ,mainDoeuvreDto.heuresTravaile() , mainDoeuvreDto.productiviteOuvrier());
         try{
-            mainDoeuvreDto.insertMateriau(materiau);
+            mainOeuvreDAO.insertMainOeuvre(mainOeuvre);
         }catch(Exception e){
             e.printStackTrace();
         }

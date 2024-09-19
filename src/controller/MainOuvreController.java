@@ -1,5 +1,6 @@
 package controller;
 
+import dao.MainOeuvreDAO;
 import model.Enum.TypeComposant;
 import model.MainOeuvre;
 import model.Projet;
@@ -48,14 +49,7 @@ public class MainOuvreController {
 
         scanner.nextLine();
 
-        System.out.println("Entrez l'ID du projet:");
-        int projetId = scanner.nextInt();
 
-        Projet projet = projetService.selectProjetById(projetId);
-        if (projet == null) {
-            System.out.println("Le projet avec l'ID spécifié n'existe pas.");
-            return;
-        }
 
 
 
@@ -71,7 +65,15 @@ public class MainOuvreController {
 
 
 
+        System.out.println("Entrez l'ID du projet:");
+        int projetId = scanner.nextInt();
+        System.out.println(projetId);
 
+        Projet projet = projetService.selectProjetById(projetId);
+        if (projet == null) {
+            System.out.println("Le projet avec l'ID spécifié n'existe pas.");
+            return;
+        }
 
         final MainDoeuvreDto mainDoeuvreDto = new MainDoeuvreDto(
                  nom,
