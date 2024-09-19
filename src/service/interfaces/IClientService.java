@@ -5,7 +5,7 @@ import model.Client;
 import java.util.List;
 
 public interface IClientService {
-    void addClient(Client client);
+    int  addClient(Client client);
 
     boolean updateClient(Client client);
 

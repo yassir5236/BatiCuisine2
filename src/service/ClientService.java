@@ -16,12 +16,17 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public void addClient(Client client) {
+    public int  addClient(Client client) {
+        int id ;
         try {
-            clientDAO.insertClient(client);
+            id = clientDAO.insertClient(client);
+            return id;
+
         } catch (SQLException e) {
             System.out.println("Error adding client: " + e.getMessage());
         }
+        return -1;
+
     }
 
     @Override

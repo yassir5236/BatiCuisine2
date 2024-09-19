@@ -17,7 +17,7 @@ public class ClientController {
         this.scanner = new Scanner(System.in);
     }
 
-    public void addClient() {
+    public int addClient() {
         System.out.println("Enter the name of the client:");
         String nom = scanner.nextLine();
 
@@ -32,8 +32,10 @@ public class ClientController {
 
         // Create a new client object without specifying ID (handled by the database)
         Client client = new Client(nom, adresse, telephone, estProfessionnel);
-        clientService.addClient(client);
+        int idNewClient = clientService.addClient(client);
         System.out.println("Client added successfully.");
+
+        return idNewClient;
     }
 
     public void updateClient() {

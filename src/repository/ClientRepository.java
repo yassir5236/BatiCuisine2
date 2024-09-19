@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface ClientRepository {
 
-    void insertClient(Client client) throws SQLException;
+    int insertClient(Client client) throws SQLException;
 
     Client selectClient(int id) throws SQLException;
 

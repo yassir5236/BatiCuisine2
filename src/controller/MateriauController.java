@@ -64,6 +64,7 @@ public class MateriauController {
 
         System.out.println("Entrez l'ID du projet:");
         int projetId = scanner.nextInt();
+        scanner.nextLine();
 
         Projet projet = projetService.selectProjetById(projetId);
         if (projet == null) {

@@ -90,7 +90,6 @@ public class ProjetDAO implements ProjetRepository {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                System.out.println("projet trouve");
                 String etatProjetStr = rs.getString("etat_projet");
 
                 // Conversion de la chaîne en enum

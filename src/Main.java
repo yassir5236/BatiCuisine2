@@ -40,6 +40,7 @@ public class Main {
 
 
 
+
         switch (choice) {
             case 1:
                 GestionClient();
@@ -57,7 +58,13 @@ public class Main {
                 obj.getAllClients();
                 break;
             case 6:
-                obj2.addMateriau();
+                boolean choix= false ;
+               do {
+                   obj2.addMateriau();
+                   System.out.println(" Voulez-vous ajouter un autre matériau ? (true/false) : ");
+                   choix = sc.nextBoolean();
+
+               }while(choix);
                 break;
             case 7:
                 obj3.addMainOuvre();
@@ -88,6 +95,7 @@ public class Main {
         switch (choice) {
             case 1:
                 int idClient = client.recherchClient();
+                System.out.println(idClient);
                 System.out.println("Souhaitez-vous continuer avec ce client ? (true/false) : ");
                 boolean response = sc.nextBoolean();
 
@@ -98,7 +106,17 @@ public class Main {
                 }
                 break;
             case 2:
-                client.addClient();
+                int idNewClient = client.addClient();
+                System.out.println(idNewClient);
+                System.out.println("Souhaitez-vous continuer avec ce client ? (true/false) : ");
+
+                boolean response2 = sc.nextBoolean();
+
+                if (response2) {
+                    projet.addProjet(idNewClient);
+                } else {
+                    System.out.println("Action annulée.");
+                }
 
 
         }

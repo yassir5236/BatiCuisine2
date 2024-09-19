@@ -34,7 +34,8 @@ public class ProjetController {
         System.out.println("Entrez la marge bénéficiaire pour ce  projet:");
         double margeBeneficiaire = scanner.nextDouble();
 
-        System.out.println("Entrez l'Etat de ce projet:");
+        scanner.nextLine();
+        System.out.println("Entrez l'Etat de ce projet: (EN_COURS, TERMINE , ANNULE)");
         String etatProjetStr = scanner.nextLine();
         EtatProjet etatProjet =EtatProjet.valueOf(etatProjetStr.toUpperCase());
 
@@ -43,6 +44,10 @@ public class ProjetController {
 
         ClientService clientService = new ClientService();
         Client client = clientService.getClient(idClient);
+        if (client == null) {
+            System.out.println("Erreur: Client non trouvé !");
+            return; // Stop the method if the client is not found
+        }
 
 
         Projet projet = new Projet( nomProjet, margeBeneficiaire,  etatProjet,  coutTotal,  client , surface);
