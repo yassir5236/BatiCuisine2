@@ -107,7 +107,7 @@ public class ClientController {
     }
 
 
-    public void recherchClient() {
+    public int recherchClient() {
         System.out.println("--- Recherche de client existant ---");
         System.out.println("Entrez le nom du client : ");
         String nom = scanner.nextLine();
@@ -119,6 +119,7 @@ public class ClientController {
             System.out.println("Phone: " + client.getTelephone());
             System.out.println("Professional: " + client.isEstProfessionnel());
         }
+        return client.getId();
 
 
     }

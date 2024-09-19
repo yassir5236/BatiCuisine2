@@ -16,8 +16,12 @@ private final ProjetDAO projetDAO ;
 
     @Override
     public void addProjet(Projet projet) {
-//        projetDAO.insertProjet(projet);
-        System.out.println("adding project");
+        try {
+            projetDAO.insertProjet(projet);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

@@ -13,14 +13,8 @@ import java.util.List;
 
 public class ProjetDAO implements ProjetRepository {
 
-    private static final String INSERT_PROJET_SQL = "INSERT INTO projet (nom_projet, marge_beneficiaire, etat_projet, cout_total, client_id) VALUES (?, ?, ?, ?, ?)";
-//    private static final String SELECT_PROJET_DETAILS_BY_ID =
-//            "SELECT p.*, cmp.*, m.*, c.* " +
-//                    "FROM projet p " +
-//                    "LEFT JOIN composant cmp ON cmp.projet_id = p.id " +
-//                    "LEFT JOIN materiau m ON m.id = cmp.id " +
-//                    "JOIN client c ON c.id = p.client_id " +
-//                    "WHERE p.id = ?";
+    private static final String INSERT_PROJET_SQL = "INSERT INTO projet (nom_projet, marge_beneficiaire, etat_projet, cout_total, client_id, surface) VALUES (?, ?, ?::etat_projet, ?, ?, ?)";
+
     private static final String SELECT_PROJET_DETAILS_BY_ID =
             "SELECT p.*, c.nom AS client_nom, c.adresse AS client_adresse, c.telephone AS client_telephone, c.est_professionnel AS client_est_professionnel " +
                     "FROM projet p " +
@@ -43,8 +37,10 @@ public class ProjetDAO implements ProjetRepository {
             preparedStatement.setString(1, projet.getNomProjet());
             preparedStatement.setDouble(2, projet.getMargeBeneficiaire());
             preparedStatement.setString(3, projet.getEtatProjet().name());
-            preparedStatement.setDouble(4, projet.getCoutTotal());
+            preparedStatement.setNull(4, java.sql.Types.DOUBLE);
             preparedStatement.setInt(5, projet.getClient().getId());
+            preparedStatement.setDouble(6, projet.getCoutTotal());
+
             preparedStatement.executeUpdate();
         }catch(SQLException e) {
             e.printStackTrace();
