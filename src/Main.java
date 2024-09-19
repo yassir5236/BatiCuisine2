@@ -1,4 +1,5 @@
 import controller.ClientController;
+import controller.MainOuvreController;
 import controller.MateriauController;
 import model.Projet;
 
@@ -9,13 +10,16 @@ public class Main {
     public static void main(String[] args) {
         ClientController obj = new ClientController();
         MateriauController obj2 = new MateriauController();
+        MainOuvreController obj3 = new MainOuvreController();
+
 
 
         System.out.println("===== Menu principale ======");
         System.out.println(" 1 - Créer un nouveau projet");
         System.out.println(" 2 - Afficher les projets existants ");
         System.out.println(" 3 - Calculer le coût d'un projet ");
-        System.out.println(" 4 - Ajouter materiau ");
+        System.out.println(" 6 - Ajouter materiau ");
+        System.out.println(" 7 - Ajouter mainOuvre ");
         System.out.println(" 5 - Quitter ");
 
 
@@ -52,6 +56,9 @@ public class Main {
                 break;
             case 6:
                 obj2.addMateriau();
+                break;
+            case 7:
+                obj3.addMainOuvre();
                 break;
             default:
                 System.out.println("your chose is wronggg");
