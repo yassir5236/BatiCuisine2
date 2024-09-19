@@ -51,7 +51,7 @@ public class MateriauController {
 
         scanner.nextLine();
 
-        System.out.println("Entrez le type de composant (MATERIEL, MAIN_DOEUVRE):");
+        System.out.println("Entrez le type de composant (MATERIAU, MAIN_DOEUVRE):");
         String typeComposantStr = scanner.nextLine().toUpperCase();
 
         TypeComposant typeComposant;

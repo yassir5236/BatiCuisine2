@@ -35,7 +35,7 @@ public class MateriauDAO implements MateriauRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_MATERIAU_SQL)) {
             preparedStatement.setString(1, materiau.getNom()); // Assurez-vous que getNom() renvoie une chaîne
 //            preparedStatement.setString(2, materiau.getTypeComposant().name().toLowerCase()); // Convertir l'énum en chaîne et gérer les valeurs null
-            preparedStatement.setString(2, materiau.getTypeComposant().name().substring(0, 1).toUpperCase() + materiau.getTypeComposant().name().substring(1).toLowerCase());
+            preparedStatement.setString(2, materiau.getTypeComposant().name());
 
             preparedStatement.setDouble(3, materiau.getTauxTVA()); // Assurez-vous que getTauxTVA() renvoie un double
             preparedStatement.setInt(4, materiau.getProjet().getId()); // Assurez-vous que getProjet() renvoie un projet avec un ID valide
