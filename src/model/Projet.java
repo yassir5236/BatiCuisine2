@@ -7,10 +7,11 @@ public class Projet {
     private double margeBeneficiaire;
     private EtatProjet etatProjet;
     private double coutTotal;
-    private float surface;
+    private double surface;
     private Client client;
 
-    public Projet(int id, String nomProjet, double margeBeneficiaire, EtatProjet etatProjet, double coutTotal, Client client, float surface) {
+
+    public Projet(int id, String nomProjet, double margeBeneficiaire, EtatProjet etatProjet, double coutTotal, Client client, double surface) {
         this.id = id;
         this.nomProjet = nomProjet;
         this.margeBeneficiaire = margeBeneficiaire;
@@ -18,15 +19,26 @@ public class Projet {
         this.coutTotal = coutTotal;
         this.client = client;
         this.surface = surface;
+
     }
 
-    public Projet(String nomProjet, double margeBeneficiaire, EtatProjet etatProjet, double coutTotal, Client client , float surface) {
+    public Projet(String nomProjet, double margeBeneficiaire, EtatProjet etatProjet, double coutTotal, Client client , double surface) {
         this.nomProjet = nomProjet;
         this.margeBeneficiaire = margeBeneficiaire;
         this.etatProjet = etatProjet;
         this.coutTotal = coutTotal;
         this.client = client;
         this.surface = surface;
+
+    }
+
+    public Projet(int id, String nom, EtatProjet etatProjet) {
+        this.id = id;
+        this.nomProjet = nom;
+        this.etatProjet = etatProjet;
+    }
+
+    public Projet() {
 
     }
 
@@ -79,7 +91,7 @@ public class Projet {
         this.client = client;
     }
 
-    public float getSurface() {
+    public double getSurface() {
         return surface;
     }
 
@@ -95,6 +107,8 @@ public class Projet {
                 ", margeBeneficiaire=" + margeBeneficiaire +
                 ", etatProjet=" + etatProjet +
                 ", coutTotal=" + coutTotal +
+                ", surface=" + surface +
+
                 ", client=" + client +
                 '}';
     }

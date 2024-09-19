@@ -1,55 +1,37 @@
 package controller;
 
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
-
-import model.Projet;
-
-
-
-import model.Client;
+import dao.MainOeuvreDAO;
 import model.Enum.TypeComposant;
-import model.Materiau;
+import model.MainOeuvre;
+import model.Projet;
+import model.dto.MainDoeuvreDto;
 import model.dto.MateriauDto;
-import service.ClientService;
+import service.MainOeuvreService;
 import service.MateriauService;
 import service.ProjetService;
 
-public class MateriauController {
-    private final MateriauService materiauService;
+import java.util.Scanner;
+
+public class MainOuvreController {
+    private final MainOeuvreService mainOeuvreService;
     private final Scanner scanner;
     private final ProjetService projetService;
+    private final MainOeuvreDAO mainOeuvreDAO;
 
 
-    public MateriauController() {
-        this.materiauService = new MateriauService();
+
+    public MainOuvreController() {
+        this.mainOeuvreService = new MainOeuvreService();
         this.scanner = new Scanner(System.in);
         this.projetService= new ProjetService();
+        this.mainOeuvreDAO= new MainOeuvreDAO();
+
     }
 
 
-    public void addMateriau() {
-        System.out.println("Entrez le nom du matériau");
+    public void addMainOuvre() {
+        System.out.println("Entrez le nom du MainOuvre");
         String nom = scanner.nextLine();
-
-        System.out.println("Entrez le coût unitaire de ce matériau (€/m²):");
-        double coutUnitaire = scanner.nextDouble();
-
-        System.out.println("Entrez la quantité de ce matériau:");
-        double quantite = scanner.nextDouble();
-
-        System.out.println("Entrez le coût de transport de ce matériau (€):");
-        double coutTransport = scanner.nextDouble();
-
-        System.out.println("Entrez le coefficient de qualité du matériau (1.0 = standard, > 1.0 = haute qualité):");
-        double coefficientQuantite = scanner.nextDouble();
-
-        System.out.println("Entrez tauxTVA:");
-        double tauxTVA = scanner.nextDouble();
-
-        scanner.nextLine();
 
         System.out.println("Entrez le type de composant (MATERIAU, MAIN_DOEUVRE):");
         String typeComposantStr = scanner.nextLine().toUpperCase();
@@ -62,8 +44,30 @@ public class MateriauController {
             return;
         }
 
+        System.out.println("Entrez tauxTVA:");
+        double tauxTVA = scanner.nextDouble();
+
+        scanner.nextLine();
+
+
+
+
+
+        System.out.println("Entrez le tauxHoraire (€/m²):");
+        double tauxHoraire = scanner.nextDouble();
+
+        System.out.println("Entrez heuresTravaile:");
+        double heuresTravaile = scanner.nextDouble();
+
+        System.out.println("Entrez productiviteOuvrier de ce MainOuvre (€):");
+        double productiviteOuvrier = scanner.nextDouble();
+
+
+
+
         System.out.println("Entrez l'ID du projet:");
         int projetId = scanner.nextInt();
+        System.out.println(projetId);
 
         Projet projet = projetService.selectProjetById(projetId);
         if (projet == null) {
@@ -71,19 +75,19 @@ public class MateriauController {
             return;
         }
 
-        final MateriauDto materiauDto = new MateriauDto(
-                nom,
-                typeComposant,
-                tauxTVA,
-                projetId,
-                coutUnitaire,
-                quantite,
-                coutTransport,
-                coefficientQuantite
+        final MainDoeuvreDto mainDoeuvreDto = new MainDoeuvreDto(
+                 nom,
+                 typeComposant,
+                 tauxTVA,
+                 projetId ,
+                 tauxHoraire,
+                 heuresTravaile,
+                 productiviteOuvrier
+
         );
 
-        materiauService.ajouterMateriau(materiauDto);
-        System.out.println("Materiau ajouté avec succès.");
+        mainOeuvreService.ajouterMainOeuvre(mainDoeuvreDto);
+        System.out.println("MainOeuvre ajouté avec succès.");
     }
 
 

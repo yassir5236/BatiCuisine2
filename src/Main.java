@@ -1,4 +1,7 @@
 import controller.ClientController;
+import controller.MainOuvreController;
+import controller.MateriauController;
+import controller.ProjetController;
 import model.Projet;
 
 import java.util.Scanner;
@@ -7,13 +10,19 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         ClientController obj = new ClientController();
+        MateriauController obj2 = new MateriauController();
+        MainOuvreController obj3 = new MainOuvreController();
+
 
 
         System.out.println("===== Menu principale ======");
         System.out.println(" 1 - Créer un nouveau projet");
         System.out.println(" 2 - Afficher les projets existants ");
         System.out.println(" 3 - Calculer le coût d'un projet ");
-        System.out.println(" 4 - Quitter ");
+        System.out.println(" 4 - Quitter \n");
+        System.out.println(" Choisissez une option : ");
+
+
 
 
 
@@ -47,6 +56,12 @@ public class Main {
             case 5:
                 obj.getAllClients();
                 break;
+            case 6:
+                obj2.addMateriau();
+                break;
+            case 7:
+                obj3.addMainOuvre();
+                break;
             default:
                 System.out.println("your chose is wronggg");
                 break;
@@ -59,7 +74,7 @@ public class Main {
 
     public static void GestionClient() {
         ClientController client = new ClientController();
-//        ProjetController projet = new ProjetController();
+        ProjetController projet = new ProjetController();
         Scanner sc = new Scanner(System.in);
 
         System.out.println("--- Recherche de client ---");
@@ -72,11 +87,14 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                client.recherchClient();
-                System.out.println("Souhaitez-vous continuer avec ce client ? (y/n) : ");
+                int idClient = client.recherchClient();
+                System.out.println("Souhaitez-vous continuer avec ce client ? (true/false) : ");
                 boolean response = sc.nextBoolean();
+
                 if (response) {
-                    projet.addProjet();
+                    projet.addProjet(idClient);
+                } else {
+                    System.out.println("Action annulée.");
                 }
                 break;
             case 2:

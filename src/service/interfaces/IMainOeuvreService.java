@@ -1,13 +1,10 @@
 package service.interfaces;
-import model.Materiau;
 
-import model.Client;
+import model.dto.MainDoeuvreDto;
 import model.dto.MateriauDto;
 
-import java.util.List;
-
-public interface IMateriauService {
-    void ajouterMateriau(MateriauDto materiauDto);
+public interface IMainOeuvreService {
+    void ajouterMainOeuvre(MainDoeuvreDto mainDoeuvreDto);
 
 //    boolean updateClient(Client client);
 //
