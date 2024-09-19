@@ -25,7 +25,6 @@ public class MateriauDAO implements MateriauRepository {
     }
 
     public void insertMateriau(Materiau materiau) throws SQLException {
-        // Vérifiez si le projet est null
         if (materiau.getProjet() == null) {
             throw new IllegalArgumentException("Le projet associé au matériau ne peut pas être null.");
         }

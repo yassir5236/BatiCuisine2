@@ -1,39 +1,48 @@
-//package dao;
-//
-//
-//import model.MainOeuvre;
-//import model.Projet;
-//import repository.MainOeuvreRepository;
-//import utils.DatabaseConnection;
-//
-//import java.sql.*;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class MainOeuvreDAO implements MainOeuvreRepository {
-//
-//    private static final String INSERT_MAIN_OEUVRE_SQL = "INSERT INTO main_oeuvre (nom, taux_horaire, heures_travail, projet_id) VALUES (?, ?, ?, ?)";
-//    private static final String SELECT_MAIN_OEUVRE_BY_ID = "SELECT * FROM main_oeuvre WHERE id = ?";
-//    private static final String SELECT_ALL_MAIN_OEUVRES = "SELECT * FROM main_oeuvre";
-//    private static final String UPDATE_MAIN_OEUVRE_SQL = "UPDATE main_oeuvre SET nom = ?, taux_horaire = ?, heures_travail = ?, projet_id = ? WHERE id = ?";
-//    private static final String DELETE_MAIN_OEUVRE_SQL = "DELETE FROM main_oeuvre WHERE id = ?";
-//
-//    private Connection connection;
-//
-//    public MainOeuvreDAO() {
-//        this.connection = DatabaseConnection.getConnection();
-//    }
-//
-//    @Override
-//    public void insertMainOeuvre(MainOeuvre mainOeuvre) throws SQLException {
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_MAIN_OEUVRE_SQL)) {
-//            preparedStatement.setString(1, mainOeuvre.getNom());
-//            preparedStatement.setDouble(2, mainOeuvre.getTauxHoraire());
-//            preparedStatement.setDouble(3, mainOeuvre.getHeuresTravail());
-//            preparedStatement.setInt(4, mainOeuvre.getProjet().getId());
-//            preparedStatement.executeUpdate();
+package dao;
+
+
+import model.MainOeuvre;
+import model.Projet;
+import repository.MainOeuvreRepository;
+import utils.DatabaseConnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainOeuvreDAO implements MainOeuvreRepository {
+
+    private static final String INSERT_MAIN_OEUVRE_SQL = "INSERT INTO main_oeuvre (nom,type_composant, taux_tva,projet_id, taux_horaire, heures_travail,productivite_ouvrier ) VALUES (?, ?::type_composant, ?, ?, ?, ?, ?)";
+    private static final String SELECT_MAIN_OEUVRE_BY_ID = "SELECT * FROM main_oeuvre WHERE id = ?";
+    private static final String SELECT_ALL_MAIN_OEUVRES = "SELECT * FROM main_oeuvre";
+    private static final String UPDATE_MAIN_OEUVRE_SQL = "UPDATE main_oeuvre SET nom = ?, taux_horaire = ?, heures_travail = ?, projet_id = ? WHERE id = ?";
+    private static final String DELETE_MAIN_OEUVRE_SQL = "DELETE FROM main_oeuvre WHERE id = ?";
+
+    private Connection connection;
+
+    public MainOeuvreDAO() {
+        this.connection = DatabaseConnection.getConnection();
+    }
+
+    @Override
+    public void insertMainOeuvre(MainOeuvre mainOeuvre) throws SQLException {
+//        if (MainOeuvre == null) {
+//            throw new IllegalArgumentException("Le projet associé au matériau ne peut pas être null.");
 //        }
-//    }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_MAIN_OEUVRE_SQL)) {
+            preparedStatement.setString(1, mainOeuvre.getNom());
+            preparedStatement.setString(2, mainOeuvre.getTypeComposant().name());
+            preparedStatement.setDouble(3, mainOeuvre.getTauxTVA());
+            preparedStatement.setInt(4, mainOeuvre.getProjet().getId());
+
+            preparedStatement.setDouble(5, mainOeuvre.getTauxHoraire());
+
+            preparedStatement.setDouble(6, mainOeuvre.getHeuresTravail());
+            preparedStatement.setDouble(7, mainOeuvre.getProductiviteOuvrier());
+
+            preparedStatement.executeUpdate();
+        }
+    }
 //
 //    @Override
 //    public MainOeuvre selectMainOeuvre(int id) throws SQLException {
@@ -95,4 +104,9 @@
 //        }
 //        return rowDeleted;
 //    }
-//}
+
+
+
+
+
+}
