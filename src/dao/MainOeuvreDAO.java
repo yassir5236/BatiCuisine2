@@ -1,9 +1,11 @@
 package dao;
 
 
+import model.Enum.TypeComposant;
 import model.MainOeuvre;
 import model.Projet;
 import repository.MainOeuvreRepository;
+import service.ProjetService;
 import utils.DatabaseConnection;
 
 import java.sql.*;
@@ -43,6 +45,46 @@ public class MainOeuvreDAO implements MainOeuvreRepository {
             preparedStatement.executeUpdate();
         }
     }
+
+
+
+    public List<MainOeuvre> selectAllMainOeuvres() {
+        List<MainOeuvre> mainOeuvres = new ArrayList<>();
+        String SELECT_ALL_MAIN_OEUVRES_SQL = "SELECT * FROM main_oeuvre";
+
+        ProjetService projetService = new ProjetService();
+
+        try (Statement statement = connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(SELECT_ALL_MAIN_OEUVRES_SQL);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nom = rs.getString("nom");
+                TypeComposant typeComposant = TypeComposant.valueOf(rs.getString("type_composant").toUpperCase());
+                double tauxTVA = rs.getDouble("taux_tva");
+                int projetId = rs.getInt("projet_id");
+                double tauxHoraire = rs.getDouble("taux_horaire");
+                double heuresTravail = rs.getDouble("heures_travail");
+                double productiviteOuvrier = rs.getDouble("productivite_ouvrier");
+
+                // Assurez-vous que le projet associé à la main-d'œuvre est récupéré
+                Projet projet = projetService.selectProjetById(projetId);
+
+                MainOeuvre mainOeuvre = new MainOeuvre(id, nom, typeComposant, tauxTVA, projet, tauxHoraire, heuresTravail, productiviteOuvrier);
+                mainOeuvres.add(mainOeuvre);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mainOeuvres;
+    }
+
+
+
+
+
+
 //
 //    @Override
 //    public MainOeuvre selectMainOeuvre(int id) throws SQLException {

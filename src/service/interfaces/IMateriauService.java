@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IMateriauService {
     void ajouterMateriau(MateriauDto materiauDto);
-
+    List<Materiau> getMateriauxByProjet(int projetId);
 //    boolean updateClient(Client client);
 //
 //    Client getClient(int id);

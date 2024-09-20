@@ -22,6 +22,11 @@ public class Projet {
 
     }
 
+
+
+
+
+
     public Projet(String nomProjet, double margeBeneficiaire, EtatProjet etatProjet, double coutTotal, Client client , double surface) {
         this.nomProjet = nomProjet;
         this.margeBeneficiaire = margeBeneficiaire;
@@ -31,6 +36,7 @@ public class Projet {
         this.surface = surface;
 
     }
+
 
     public Projet(int id, String nom, EtatProjet etatProjet) {
         this.id = id;
@@ -45,7 +51,13 @@ public class Projet {
     }
 
 
-
+    public Projet(int id ,  String nom,double surface , double margeBeneficiaire,Client client) {
+        this.id= id;
+        this.nomProjet = nom;
+        this.surface = surface;
+        this.margeBeneficiaire= margeBeneficiaire;
+        this.client=client;
+    }
 
 
     // Getters and Setters

@@ -105,11 +105,13 @@
 package controller;
 
 import model.Enum.TypeComposant;
+import model.MainOeuvre;
 import model.Projet;
 import model.dto.MainDoeuvreDto;
 import service.MainOeuvreService;
 import service.ProjetService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MainOuvreController {
@@ -164,4 +166,50 @@ public class MainOuvreController {
             addMainOuvre(idProjet);
         }
     }
+
+
+
+    public void afficherDetailDesCoutsMainOeuvre(int idProjet) {
+        List<MainOeuvre> mainOeuvres = mainOeuvreService.getMainOeuvresByProjet(idProjet);
+
+        if (mainOeuvres.isEmpty()) {
+            System.out.println("Aucune main-d'œuvre trouvée pour ce projet.");
+            return;
+        }
+
+        // Détail des coûts
+        System.out.println("--- Détail des Coûts de Main-d'œuvre ---");
+        double coutTotalMainOeuvre = mainOeuvres.stream()
+                .peek(mainOeuvre -> {
+                    double coutMainOeuvre = mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail();
+                    System.out.printf("%s : %.2f € (taux horaire : %.2f €/h, heures travaillées : %.2f h, productivité : %.2f)\n",
+                            mainOeuvre.getNom(),
+                            coutMainOeuvre,
+                            mainOeuvre.getTauxHoraire(),
+                            mainOeuvre.getHeuresTravail(),
+                            mainOeuvre.getProductiviteOuvrier());
+                })
+                .mapToDouble(mainOeuvre -> mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail())
+                .sum();
+
+        // Coût total avant TVA
+        System.out.printf("\n**Coût total de la main-d'œuvre avant TVA : %.2f €**\n", coutTotalMainOeuvre);
+
+        // Coût total avec TVA
+        double tauxTVA = 20; // Par exemple, 20%
+        double coutTotalAvecTVA = coutTotalMainOeuvre * (1 + tauxTVA / 100);
+
+        System.out.printf("**Coût total de la main-d'œuvre avec TVA (%d%%) : %.2f €**\n", (int) tauxTVA, coutTotalAvecTVA);
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -7,11 +7,19 @@ import java.util.Scanner;
 
 public class CoutTotalController {
 private final ProjetService projetService;
+private final MateriauController materiauController ;
+private final  MainOuvreController  mainOuvreController ;
+private final   ProjetController    projetController;
+
+
 
 
 
    public CoutTotalController(){
         this.projetService= new ProjetService();
+        this.materiauController = new MateriauController();
+       this.mainOuvreController = new MainOuvreController();
+       this.projetController  = new ProjetController();
    }
 
 public void coutTotal(int idProjet ) {
@@ -24,14 +32,20 @@ public void coutTotal(int idProjet ) {
         }else{
             System.out.println("Nom du projet  :" + projet.getNomProjet());
             System.out.println("client         :" + projet.getClient().getNom());
-            System.out.println("Surface        :" + projet.getSurface());
+            System.out.println("Surface        :" + projet.getSurface() + "m²");
             System.out.println("Adresse        :" + projet.getClient().getAdresse());
         }
 
+        System.out.println("\n");
+        System.out.println("-- Détail des Coûts--");
+        materiauController.afficherDetailDesCouts(idProjet);
+        mainOuvreController.afficherDetailDesCoutsMainOeuvre(idProjet);
+        projetController.calculerCoutTotalDuProjet(idProjet);
 
 
 
-    }
+
+}
 
 
 
