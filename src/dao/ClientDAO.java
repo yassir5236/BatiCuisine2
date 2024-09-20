@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ClientDAO implements ClientRepository {
 
-    private static final String INSERT_CLIENT_SQL = "INSERT INTO client (nom, adresse, telephone, est_professionnel) VALUES (?, ?, ?, ?)";
+    private static final String INSERT_CLIENT_SQL = "INSERT INTO client (nom, adresse, telephone, est_professionnel) VALUES (?, ?, ?, ?) RETURNING id ";
     private static final String SELECT_CLIENT_BY_ID = "SELECT * FROM client WHERE id = ?";
     private static final String SELECT_ALL_CLIENTS = "SELECT * FROM client";
     private static final String UPDATE_CLIENT_SQL = "UPDATE client SET nom = ?, adresse = ?, telephone = ?, est_professionnel = ? WHERE id = ?";
@@ -25,15 +25,21 @@ public class ClientDAO implements ClientRepository {
     }
 
     @Override
-    public void insertClient(Client client) throws SQLException {
+    public int  insertClient(Client client) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CLIENT_SQL)) {
 
             preparedStatement.setString(1, client.getNom());
             preparedStatement.setString(2, client.getAdresse());
             preparedStatement.setString(3, client.getTelephone());
             preparedStatement.setBoolean(4, client.isEstProfessionnel());
-            preparedStatement.executeUpdate();
+//            preparedStatement.executeUpdate();
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
         }
+        return -1;
     }
 
     @Override
@@ -109,6 +115,7 @@ public class ClientDAO implements ClientRepository {
             if (rs.next()) {
                 System.out.println("Client trouvé !");
                 client = new Client(
+                        rs.getInt("id"),
                         rs.getString("nom"),
                         rs.getString("adresse"),
                         rs.getString("telephone"),

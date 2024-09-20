@@ -40,6 +40,7 @@ public class Main {
 
 
 
+
         switch (choice) {
             case 1:
                 GestionClient();
@@ -57,10 +58,18 @@ public class Main {
                 obj.getAllClients();
                 break;
             case 6:
-                obj2.addMateriau();
+
+//                obj2.addMateriau();
+//                boolean choix= false ;
+//               do {
+////                   obj2.addMateriau();
+//                   System.out.println(" Voulez-vous ajouter un autre matériau ? (true/false) : ");
+//                   choix = sc.nextBoolean();
+//
+//               }while(choix);
                 break;
             case 7:
-                obj3.addMainOuvre();
+//                obj3.addMainOuvre();
                 break;
             default:
                 System.out.println("your chose is wronggg");
@@ -75,6 +84,7 @@ public class Main {
     public static void GestionClient() {
         ClientController client = new ClientController();
         ProjetController projet = new ProjetController();
+        MateriauController obj2 = new MateriauController();
         Scanner sc = new Scanner(System.in);
 
         System.out.println("--- Recherche de client ---");
@@ -88,17 +98,32 @@ public class Main {
         switch (choice) {
             case 1:
                 int idClient = client.recherchClient();
+                System.out.println(idClient);
                 System.out.println("Souhaitez-vous continuer avec ce client ? (true/false) : ");
                 boolean response = sc.nextBoolean();
 
                 if (response) {
-                    projet.addProjet(idClient);
+                     projet.addProjet(idClient);
+
                 } else {
                     System.out.println("Action annulée.");
                 }
                 break;
             case 2:
-                client.addClient();
+                int idNewClient = client.addClient();
+                System.out.println(idNewClient);
+                System.out.println("Souhaitez-vous continuer avec ce client ? (true/false) : ");
+
+                boolean response2 = sc.nextBoolean();
+
+                if (response2) {
+                    projet.addProjet(idNewClient);
+                } else {
+                    System.out.println("Action annulée.");
+                }
+
+            case 3:
+//                obj2.addMateriau();
 
 
         }

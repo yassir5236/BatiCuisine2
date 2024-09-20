@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ProjetDAO implements ProjetRepository {
 
-    private static final String INSERT_PROJET_SQL = "INSERT INTO projet (nom_projet, marge_beneficiaire, etat_projet, cout_total, client_id, surface) VALUES (?, ?, ?::etat_projet, ?, ?, ?)";
+    private static final String INSERT_PROJET_SQL = "INSERT INTO projet (nom_projet, marge_beneficiaire, etat_projet, cout_total, client_id, surface) VALUES (?, ?, ?::etat_projet, ?, ?, ?) RETURNING id";
 
     private static final String SELECT_PROJET_DETAILS_BY_ID =
             "SELECT p.*, c.nom AS client_nom, c.adresse AS client_adresse, c.telephone AS client_telephone, c.est_professionnel AS client_est_professionnel " +
@@ -32,7 +32,8 @@ public class ProjetDAO implements ProjetRepository {
     }
 
     @Override
-    public void insertProjet(Projet projet) throws SQLException {
+    public int insertProjet(Projet projet) throws SQLException {
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PROJET_SQL)) {
             preparedStatement.setString(1, projet.getNomProjet());
             preparedStatement.setDouble(2, projet.getMargeBeneficiaire());
@@ -41,10 +42,14 @@ public class ProjetDAO implements ProjetRepository {
             preparedStatement.setInt(5, projet.getClient().getId());
             preparedStatement.setDouble(6, projet.getCoutTotal());
 
-            preparedStatement.executeUpdate();
+            ResultSet rs =  preparedStatement.executeQuery();
+            if(rs.next()) {
+                return rs.getInt("id");
+            }
         }catch(SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
 
@@ -90,7 +95,6 @@ public class ProjetDAO implements ProjetRepository {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                System.out.println("projet trouve");
                 String etatProjetStr = rs.getString("etat_projet");
 
                 // Conversion de la chaîne en enum
