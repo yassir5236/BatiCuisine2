@@ -15,13 +15,16 @@ private final ProjetDAO projetDAO ;
 
 
     @Override
-    public void addProjet(Projet projet) {
+    public int  addProjet(Projet projet) {
+        int id ;
         try {
-            projetDAO.insertProjet(projet);
+             id= projetDAO.insertProjet(projet);
+             return id;
 
         }catch (Exception e){
             e.printStackTrace();
         }
+        return -1;
     }
 
 

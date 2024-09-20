@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProjetRepository {
 
-    void insertProjet(Projet projet) throws SQLException;
+    int insertProjet(Projet projet) throws SQLException;
 
     Projet selectProjetById(int id) throws SQLException;
 

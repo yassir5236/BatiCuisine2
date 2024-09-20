@@ -1,11 +1,13 @@
 package controller;
 
 import dao.MainOeuvreDAO;
+import model.Client;
 import model.Enum.TypeComposant;
 import model.MainOeuvre;
 import model.Projet;
 import model.dto.MainDoeuvreDto;
 import model.dto.MateriauDto;
+import service.ClientService;
 import service.MainOeuvreService;
 import service.MateriauService;
 import service.ProjetService;
@@ -29,7 +31,8 @@ public class MainOuvreController {
     }
 
 
-    public void addMainOuvre() {
+    public void addMainOuvre(int idProjet) {
+        System.out.println("--- Ajout de la main-d'œuvre-- \n");
         System.out.println("Entrez le nom du MainOuvre");
         String nom = scanner.nextLine();
 
@@ -65,9 +68,8 @@ public class MainOuvreController {
 
 
 
-        System.out.println("Entrez l'ID du projet:");
-        int projetId = scanner.nextInt();
-        System.out.println(projetId);
+
+        int projetId = idProjet;
 
         Projet projet = projetService.selectProjetById(projetId);
         if (projet == null) {
@@ -88,6 +90,12 @@ public class MainOuvreController {
 
         mainOeuvreService.ajouterMainOeuvre(mainDoeuvreDto);
         System.out.println("MainOeuvre ajouté avec succès.");
+        System.out.println("voulez vous inserer un autre MainDoeuvre (true/false) ?");
+        boolean choix = scanner.nextBoolean();
+        scanner.nextLine();
+        if (choix) {
+            addMainOuvre(idProjet);
+        }
     }
 
 

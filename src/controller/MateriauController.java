@@ -30,12 +30,14 @@ public class MateriauController {
     }
 
 
-    public void addMateriau() {
+    public void addMateriau(int idProjet) {
+
         System.out.println("Entrez le nom du matériau");
         String nom = scanner.nextLine();
 
         System.out.println("Entrez le coût unitaire de ce matériau (€/m²):");
         double coutUnitaire = scanner.nextDouble();
+        scanner.nextLine();
 
         System.out.println("Entrez la quantité de ce matériau:");
         double quantite = scanner.nextDouble();
@@ -62,9 +64,11 @@ public class MateriauController {
             return;
         }
 
-        System.out.println("Entrez l'ID du projet:");
-        int projetId = scanner.nextInt();
-        scanner.nextLine();
+//        System.out.println("Entrez l'ID du projet:");
+//        int projetId = scanner.nextInt();
+//        scanner.nextLine();
+
+        int projetId = idProjet;
 
         Projet projet = projetService.selectProjetById(projetId);
         if (projet == null) {
@@ -84,7 +88,16 @@ public class MateriauController {
         );
 
         materiauService.ajouterMateriau(materiauDto);
-        System.out.println("Materiau ajouté avec succès.");
+        System.out.println("Materiau ajouté avec succès.\n");
+        System.out.println("voulez vous inserer un autre materiau (true/false) ?");
+        boolean choix = scanner.nextBoolean();
+        scanner.nextLine();
+        if (choix) {
+            addMateriau(idProjet);
+        }
+
+
+
     }
 
 

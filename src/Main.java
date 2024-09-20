@@ -58,16 +58,18 @@ public class Main {
                 obj.getAllClients();
                 break;
             case 6:
-                boolean choix= false ;
-               do {
-                   obj2.addMateriau();
-                   System.out.println(" Voulez-vous ajouter un autre matériau ? (true/false) : ");
-                   choix = sc.nextBoolean();
 
-               }while(choix);
+//                obj2.addMateriau();
+//                boolean choix= false ;
+//               do {
+////                   obj2.addMateriau();
+//                   System.out.println(" Voulez-vous ajouter un autre matériau ? (true/false) : ");
+//                   choix = sc.nextBoolean();
+//
+//               }while(choix);
                 break;
             case 7:
-                obj3.addMainOuvre();
+//                obj3.addMainOuvre();
                 break;
             default:
                 System.out.println("your chose is wronggg");
@@ -82,6 +84,7 @@ public class Main {
     public static void GestionClient() {
         ClientController client = new ClientController();
         ProjetController projet = new ProjetController();
+        MateriauController obj2 = new MateriauController();
         Scanner sc = new Scanner(System.in);
 
         System.out.println("--- Recherche de client ---");
@@ -100,7 +103,8 @@ public class Main {
                 boolean response = sc.nextBoolean();
 
                 if (response) {
-                    projet.addProjet(idClient);
+                     projet.addProjet(idClient);
+
                 } else {
                     System.out.println("Action annulée.");
                 }
@@ -117,6 +121,9 @@ public class Main {
                 } else {
                     System.out.println("Action annulée.");
                 }
+
+            case 3:
+//                obj2.addMateriau();
 
 
         }
