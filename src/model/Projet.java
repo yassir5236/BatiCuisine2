@@ -38,9 +38,15 @@ public class Projet {
         this.etatProjet = etatProjet;
     }
 
-    public Projet() {
-
+    public Projet( String nom,double surface ,Client client) {
+        this.nomProjet = nom;
+        this.surface = surface;
+        this.client=client;
     }
+
+
+
+
 
     // Getters and Setters
     public int getId() {

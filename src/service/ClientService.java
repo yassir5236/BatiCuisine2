@@ -16,17 +16,13 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public int  addClient(Client client) {
-        int id ;
+    public int addClient(Client client) {
         try {
-            id = clientDAO.insertClient(client);
-            return id;
-
+            return clientDAO.insertClient(client);
         } catch (SQLException e) {
             System.out.println("Error adding client: " + e.getMessage());
+            return -1;
         }
-        return -1;
-
     }
 
     @Override
@@ -71,14 +67,12 @@ public class ClientService implements IClientService {
 
     @Override
     public Client rechercheClient(String nom){
-        Client client = null;
-        try{
-            client = clientDAO.rechercheClient(nom);
-
-        }catch(SQLException e){
+        try {
+            return clientDAO.rechercheClient(nom);
+        } catch (SQLException e) {
             System.out.println("Error fetching recherche client: " + e.getMessage());
+            return null;
         }
-        return client;
     }
 
 }
