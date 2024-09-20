@@ -1,75 +1,162 @@
+//package controller;
+//
+//import model.Client;
+//import model.Enum.EtatProjet;
+//import model.MainOeuvre;
+//import model.Projet;
+//import service.ClientService;
+//import service.ProjetService;
+//
+//import java.util.List;
+//import java.util.Scanner;
+//
+//import static java.lang.String.valueOf;
+//
+//public class ProjetController {
+//    private final ProjetService projetService;
+//    private final Scanner scanner;
+//    private final MateriauController materiauController;
+//    private double coutTotal;
+//    private final MainOuvreController mainOuvreController;
+//
+//    public ProjetController() {
+//        this.projetService = new ProjetService();
+//        this.scanner = new Scanner(System.in);
+//        this.materiauController = new MateriauController();
+//        this.mainOuvreController= new MainOuvreController();
+//    }
+//
+//    public void addProjet(int idClient) {
+//
+//
+//        System.out.println("--- Création d'un Nouveau Projet-- \n");
+//        System.out.println("Entrez le nom du projet:");
+//        String nomProjet = scanner.nextLine();
+//
+//        System.out.println("Entrez la marge bénéficiaire pour ce  projet:");
+//        double margeBeneficiaire = scanner.nextDouble();
+//
+//        scanner.nextLine();
+//        System.out.println("Entrez l'Etat de ce projet: (EN_COURS, TERMINE , ANNULE)");
+//        String etatProjetStr = scanner.nextLine();
+//        EtatProjet etatProjet =EtatProjet.valueOf(etatProjetStr.toUpperCase());
+//
+//        System.out.println("Entrez la surface de la cuisine (en m²):");
+//        double surface = scanner.nextDouble();
+//
+//        ClientService clientService = new ClientService();
+//        Client client = clientService.getClient(idClient);
+//        if (client == null) {
+//            System.out.println("Erreur: Client non trouvé !");
+//
+//        }
+//
+//
+//        Projet projet = new Projet( nomProjet, margeBeneficiaire,  etatProjet,  coutTotal,  client , surface);
+//
+//        int idProjet = projetService.addProjet(projet);
+//
+//
+//
+//        System.out.println("--- Ajout des matériaux---\n");
+//
+//         materiauController.addMateriau(idProjet);
+//        mainOuvreController.addMainOuvre(idProjet);
+//
+//
+//
+//
+//
+//
+//
+//
+//    }
+//
+//}
+
+
+
+
+
+
 package controller;
 
 import model.Client;
 import model.Enum.EtatProjet;
-import model.MainOeuvre;
 import model.Projet;
 import service.ClientService;
 import service.ProjetService;
 
-import java.util.List;
+import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import static java.lang.String.valueOf;
 
 public class ProjetController {
     private final ProjetService projetService;
     private final Scanner scanner;
     private final MateriauController materiauController;
-    private double coutTotal;
     private final MainOuvreController mainOuvreController;
 
     public ProjetController() {
         this.projetService = new ProjetService();
         this.scanner = new Scanner(System.in);
         this.materiauController = new MateriauController();
-        this.mainOuvreController= new MainOuvreController();
+        this.mainOuvreController = new MainOuvreController();
     }
 
     public void addProjet(int idClient) {
+        System.out.println("--- Création d'un Nouveau Projet ---");
 
-
-        System.out.println("--- Création d'un Nouveau Projet-- \n");
-        System.out.println("Entrez le nom du projet:");
+        System.out.print("Nom du projet: ");
         String nomProjet = scanner.nextLine();
 
-        System.out.println("Entrez la marge bénéficiaire pour ce  projet:");
-        double margeBeneficiaire = scanner.nextDouble();
+        double margeBeneficiaire = getValidatedDouble("Marge bénéficiaire (doit être positive): ", 0, Double.MAX_VALUE);
+        EtatProjet etatProjet = getValidatedEtatProjet();
+        double surface = getValidatedDouble("Surface de la cuisine (en m², doit être positive): ", 0, Double.MAX_VALUE);
 
-        scanner.nextLine();
-        System.out.println("Entrez l'Etat de ce projet: (EN_COURS, TERMINE , ANNULE)");
-        String etatProjetStr = scanner.nextLine();
-        EtatProjet etatProjet =EtatProjet.valueOf(etatProjetStr.toUpperCase());
-
-        System.out.println("Entrez la surface de la cuisine (en m²):");
-        double surface = scanner.nextDouble();
-
-        ClientService clientService = new ClientService();
-        Client client = clientService.getClient(idClient);
+        Client client = new ClientService().getClient(idClient);
         if (client == null) {
             System.out.println("Erreur: Client non trouvé !");
-
+            return;
         }
 
-
-        Projet projet = new Projet( nomProjet, margeBeneficiaire,  etatProjet,  coutTotal,  client , surface);
-
+        Projet projet = new Projet(nomProjet, margeBeneficiaire, etatProjet, 0, client, surface);
         int idProjet = projetService.addProjet(projet);
 
-
-
-        System.out.println("--- Ajout des matériaux---\n");
-
-         materiauController.addMateriau(idProjet);
+        System.out.println("--- Ajout des matériaux et main-d'œuvre ---");
+        materiauController.addMateriau(idProjet);
         mainOuvreController.addMainOuvre(idProjet);
-
-
-
-
-
-
-
 
     }
 
+    private double getValidatedDouble(String prompt, double min, double max) {
+        double value = -1;
+        while (value < min || value > max) {
+            System.out.print(prompt);
+            try {
+                value = scanner.nextDouble();
+                if (value < min || value > max) {
+                    System.out.println("Erreur: Valeur non valide.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Erreur: Veuillez entrer un nombre valide.");
+                scanner.next();
+            }
+        }
+        scanner.nextLine();
+        return value;
+    }
+
+    private EtatProjet getValidatedEtatProjet() {
+        EtatProjet etatProjet = null;
+        while (etatProjet == null) {
+            try {
+                System.out.print("État du projet (EN_COURS, TERMINE, ANNULE): ");
+                etatProjet = EtatProjet.valueOf(scanner.nextLine().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erreur: État non valide.");
+            }
+        }
+        return etatProjet;
+    }
 }
+
