@@ -30,7 +30,6 @@ public class ClientController {
         System.out.println("Is the client a professional (true/false)?");
         boolean estProfessionnel = scanner.nextBoolean();
 
-        // Create a new client object without specifying ID (handled by the database)
         Client client = new Client(nom, adresse, telephone, estProfessionnel);
         int idNewClient = clientService.addClient(client);
         System.out.println("Client added successfully.");

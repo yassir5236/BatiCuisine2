@@ -98,10 +98,7 @@
 //}
 
 
-import controller.ClientController;
-import controller.MainOuvreController;
-import controller.MateriauController;
-import controller.ProjetController;
+import controller.*;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -112,6 +109,7 @@ public class Main {
         ClientController clientController = new ClientController();
         MateriauController materiauController = new MateriauController();
         MainOuvreController mainOuvreController = new MainOuvreController();
+        CoutTotalController coutTotalController = new CoutTotalController();
         Scanner sc = new Scanner(System.in);
 
         while (true) {
@@ -123,16 +121,34 @@ public class Main {
                     gestionClient(sc);
                     break;
                 case 2:
-                    // Logique pour afficher les projets existants (à implémenter)
-                    System.out.println("Affichage des projets existants (non implémenté)");
+                    System.out.println("Affichage des projets existants ()");
                     break;
                 case 3:
-                    // Logique pour calculer le coût d'un projet (à implémenter)
-                    System.out.println("Calcul du coût du projet (non implémenté)");
+                    boolean idValide = false;
+
+                    while (!idValide) {
+                        try {
+                            System.out.print("Entrez l'ID du projet ou tapez 0 pour retourner au menu précédent : ");
+                            int idProjet = sc.nextInt();
+
+                            if (idProjet == 0) {
+                                System.out.println("Retour au menu précédent...");
+                                break;
+                            }
+
+                            coutTotalController.coutTotal(idProjet);
+                            idValide=true;
+
+                        } catch (InputMismatchException e) {
+                            System.out.println("Erreur : Veuillez entrer un ID de projet valide (nombre entier).");
+                            sc.next();
+                        }
+                    }
                     break;
+
                 case 4:
                     System.out.println("Quitter le programme...");
-                    return; // Sort du programme
+                    return;
                 default:
                     System.out.println("Choix incorrect, veuillez réessayer.");
                     break;
@@ -152,6 +168,8 @@ public class Main {
     public static void gestionClient(Scanner sc) {
         ClientController clientController = new ClientController();
         ProjetController projetController = new ProjetController();
+        CoutTotalController coutTotalController = new CoutTotalController();
+
 
         while (true) {
             System.out.println("--- Gestion des clients ---");
@@ -168,7 +186,8 @@ public class Main {
 //                    System.out.println("ID du client : " + idClient);
                     System.out.print("Souhaitez-vous continuer avec ce client ? (true/false) : ");
                     if (sc.nextBoolean()) {
-                        projetController.addProjet(idClient);
+                        int idProjet = projetController.addProjet(idClient);
+                        coutTotalController.coutTotal(idProjet);
                     } else {
                         System.out.println("Action annulée.");
                     }

@@ -24,6 +24,10 @@ public class Client {
         this.est_Professionnel = estProfessionnel;
     }
 
+    public Client() {
+
+    }
+
 
 
 

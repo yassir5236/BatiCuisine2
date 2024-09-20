@@ -103,7 +103,7 @@ public class ProjetController {
         this.mainOuvreController = new MainOuvreController();
     }
 
-    public void addProjet(int idClient) {
+    public int  addProjet(int idClient) {
         System.out.println("--- Création d'un Nouveau Projet ---");
 
         System.out.print("Nom du projet: ");
@@ -116,7 +116,7 @@ public class ProjetController {
         Client client = new ClientService().getClient(idClient);
         if (client == null) {
             System.out.println("Erreur: Client non trouvé !");
-            return;
+            return -1 ;
         }
 
         Projet projet = new Projet(nomProjet, margeBeneficiaire, etatProjet, 0, client, surface);
@@ -125,6 +125,7 @@ public class ProjetController {
         System.out.println("--- Ajout des matériaux et main-d'œuvre ---");
         materiauController.addMateriau(idProjet);
         mainOuvreController.addMainOuvre(idProjet);
+        return idProjet;
 
     }
 
@@ -132,17 +133,16 @@ public class ProjetController {
         double value = -1;
         while (value < min || value > max) {
             System.out.print(prompt);
+            String input = scanner.nextLine();
             try {
-                value = scanner.nextDouble();
+                value = Double.parseDouble(input);
                 if (value < min || value > max) {
                     System.out.println("Erreur: Valeur non valide.");
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Erreur: Veuillez entrer un nombre valide.");
-                scanner.next();
             }
         }
-        scanner.nextLine();
         return value;
     }
 
