@@ -215,5 +215,29 @@ public class ProjetController {
         devisController.EnregistrerDevis(coutTotalFinal,idProjet);
     }
 
+
+
+
+
+
+
+
+    public void afficherTousLesProjets() {
+        List<Projet> projets = projetService.selectAllProjet();
+        for (Projet projet : projets) {
+            System.out.println("ID du projet : " + projet.getId());
+            System.out.println("Nom du projet : " + projet.getNomProjet());
+            System.out.println("Surface : " + projet.getSurface() + " m²");
+            System.out.println("Marge bénéficiaire : " + projet.getMargeBeneficiaire() + "%");
+            System.out.println("Coût total : " + projet.getCoutTotal() + " €");
+//            System.out.println("Client : " + projet.getClient().getNom());
+            System.out.println("Adresse du client : " + projet.getClient().getAdresse());
+            System.out.println("Téléphone du client : " + projet.getClient().getTelephone());
+            System.out.println("Le client est un professionnel ? " + (projet.getClient().isEstProfessionnel() ? "Oui" : "Non"));
+            System.out.println("------------------------------------------------------------");
+        }
+    }
+
+
 }
 

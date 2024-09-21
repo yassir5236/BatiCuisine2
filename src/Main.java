@@ -99,6 +99,7 @@
 
 
 import controller.*;
+import service.ProjetService;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -110,6 +111,8 @@ public class Main {
         MateriauController materiauController = new MateriauController();
         MainOuvreController mainOuvreController = new MainOuvreController();
         CoutTotalController coutTotalController = new CoutTotalController();
+        ProjetService projetService = new ProjetService();
+        ProjetController projetController = new ProjetController();
         Scanner sc = new Scanner(System.in);
 
         while (true) {
@@ -121,7 +124,8 @@ public class Main {
                     gestionClient(sc);
                     break;
                 case 2:
-                    System.out.println("Affichage des projets existants ()");
+                    System.out.println("Affichage des projets existants ");
+                    projetController.afficherTousLesProjets();
                     break;
                 case 3:
                     boolean idValide = false;

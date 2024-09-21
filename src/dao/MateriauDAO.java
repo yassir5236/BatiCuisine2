@@ -90,7 +90,6 @@
                     double coefficientQuantite = rs.getDouble("coefficient_quantite");
 
 
-                    // Assurez-vous que le projet associé au matériau est récupéré
                     Projet projet = projetService.selectProjetById(projetId);
                     if (projet == null) {
                         System.out.println("not found");

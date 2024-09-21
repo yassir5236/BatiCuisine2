@@ -17,7 +17,12 @@ public class ProjetDAO implements ProjetRepository {
 
     private static final String SELECT_PROJET_DETAILS_BY_ID = "";
 
-    private static final String SELECT_ALL_PROJETS = "SELECT * FROM projet";
+//    private static final String SELECT_ALL_PROJETS = "SELECT * FROM projet";
+    private static final String SELECT_ALL_PROJETS = "SELECT p.id, p.nom_projet, p.surface, p.marge_beneficiaire, p.etat_projet, p.cout_total, "
+            + "c.id AS client_id, c.nom AS client_nom, c.adresse AS client_adresse, "
+            + "c.telephone AS client_telephone, c.est_professionnel AS client_est_professionnel "
+            + "FROM projet p "
+            + "JOIN client c ON p.client_id = c.id";
     private static final String UPDATE_PROJET_SQL = "UPDATE projet SET nom_projet = ?, marge_beneficiaire = ?, etat_projet = ?, cout_total = ?, client_id = ? WHERE id = ?";
     private static final String DELETE_PROJET_SQL = "DELETE FROM projet WHERE id = ?";
 
@@ -112,31 +117,32 @@ public class ProjetDAO implements ProjetRepository {
 
 
 
-//
-//    @Override
-//    public List<Projet> selectAllProjets() throws SQLException {
-//        List<Projet> projets = new ArrayList<>();
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_PROJETS)) {
-//            ResultSet rs = preparedStatement.executeQuery();
-//            while (rs.next()) {
-//                projets.add(new Projet(
-//                        rs.getInt("id"),
-//                        rs.getString("nom_projet"),
-//                        rs.getDouble("marge_beneficiaire"),
-//                        EtatProjet.valueOf(rs.getString("etat_projet")),
-//                        rs.getDouble("cout_total"),
-//                        new Client(
-//                                rs.getInt("client_id"),
-//                                rs.getString("client_nom"),      // Assuming you select this from the DB
-//                                rs.getString("client_adresse"),  // Assuming you select this from the DB
-//                                rs.getString("client_telephone"), // Assuming you select this from the DB
-//                                rs.getBoolean("client_est_professionnel") // Assuming you select this from the DB
-//                        )
-//                ));
-//            }
-//        }
-//        return projets;
-//    }
+
+    @Override
+    public List<Projet> selectAllProjets() throws SQLException {
+        List<Projet> projets = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_PROJETS)) {
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                projets.add(new Projet(
+
+                        rs.getInt("id"),
+                        rs.getString("nom_projet"),
+                        rs.getDouble("surface")   ,
+                        rs.getDouble("marge_beneficiaire"),
+
+                        new Client(
+                                rs.getInt("client_id"),
+                                rs.getString("client_nom"),
+                                rs.getString("client_adresse"),
+                                rs.getString("client_telephone"),
+                                rs.getBoolean("client_est_professionnel")
+                        )
+                ));
+            }
+        }
+        return projets;
+    }
 //
 //    @Override
 //    public boolean updateProjet(Projet projet) throws SQLException {

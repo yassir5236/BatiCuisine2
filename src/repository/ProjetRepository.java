@@ -10,7 +10,7 @@ public interface ProjetRepository {
 
     Projet selectProjetById(int id) throws SQLException;
 
-//    List<Projet> selectAllProjets() throws SQLException;
+    List<Projet> selectAllProjets() throws SQLException;
 //
 //    boolean updateProjet(Projet projet) throws SQLException;
 //
