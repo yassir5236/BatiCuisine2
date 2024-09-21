@@ -175,7 +175,7 @@ public class ProjetController {
 
 
 
-    public void calculerCoutTotalDuProjet(int idProjet) {
+    public void calculerCoutTotalDuProjet(int idProjet ,double  TV) {
         Projet projet = projetService.selectProjetById(idProjet);
         if (projet == null) {
             System.out.println("Le projet avec l'ID spécifié n'existe pas.");
@@ -208,7 +208,7 @@ public class ProjetController {
 
         System.out.printf("Coût total avant marge : %.2f €\n", coutTotalAvantMarge);
         System.out.printf("Marge bénéficiaire (%.2f%%) : %.2f €\n", margeBeneficiaire, montantMarge);
-        System.out.printf("**Coût total final du projet : %.2f €**\n", coutTotalFinal);
+        System.out.printf("**Coût total final du projet : %.2f €**\n", coutTotalFinal+(TV*coutTotalFinal/100));
 
         projetService.updateCoutTotal(coutTotalFinal,idProjet);
 
