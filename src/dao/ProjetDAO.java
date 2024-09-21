@@ -34,7 +34,7 @@ public class ProjetDAO implements ProjetRepository {
             preparedStatement.setString(1, projet.getNomProjet());
             preparedStatement.setDouble(2, projet.getMargeBeneficiaire());
             preparedStatement.setString(3, projet.getEtatProjet().name());
-            preparedStatement.setNull(4, java.sql.Types.DOUBLE);
+            preparedStatement.setDouble(4, projet.getCoutTotal());
             preparedStatement.setInt(5, projet.getClient().getId());
 //            preparedStatement.setDouble(6, projet.getCoutTotal());
             preparedStatement.setDouble(6, projet.getSurface());
@@ -50,6 +50,20 @@ public class ProjetDAO implements ProjetRepository {
     }
 
 
+    public void updateCoutTotal(double coutTotal, int id) throws SQLException {
+        System.out.println(coutTotal);
+        System.out.println(id);
+        String sql = "UPDATE projet SET cout_total = ? WHERE id = ?";
+        try(PreparedStatement ps = connection.prepareStatement(sql)){
+            ps.setDouble(1, coutTotal);
+            ps.setInt(2,id);
+            ps.executeUpdate();
+            System.out.println("cout updated");
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

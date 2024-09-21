@@ -38,4 +38,12 @@ private final ProjetDAO projetDAO ;
         }
         return projet;
     }
+
+    public void updateCoutTotal(double coutTotal,int idProjet) {
+        try{
+            projetDAO.updateCoutTotal(coutTotal,idProjet);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

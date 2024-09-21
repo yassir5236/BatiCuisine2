@@ -102,6 +102,7 @@ public class ProjetController {
     private final MainOuvreController mainOuvreController;
     private final MateriauService materiauService;
     private final MainOeuvreService mainOeuvreService;
+    private final DevisController devisController;
 
     public ProjetController() {
         this.projetService = new ProjetService();
@@ -110,6 +111,7 @@ public class ProjetController {
         this.mainOuvreController = new MainOuvreController();
         this.materiauService = new MateriauService();
         this.mainOeuvreService=new MainOeuvreService();
+        this.devisController=new DevisController();
     }
 
     public int  addProjet(int idClient) {
@@ -180,11 +182,9 @@ public class ProjetController {
             return;
         }
 
-        // Récupérer les matériaux et la main-d'œuvre associés au projet
         List<Materiau> materiaux = materiauService.getMateriauxByProjet(idProjet);
         List<MainOeuvre> mainOeuvres = mainOeuvreService.getMainOeuvresByProjet(idProjet);
 
-        // Calculer le coût total des matériaux
         double coutTotalMateriaux = materiaux.stream()
                 .mapToDouble(materiau -> {
                     double coutMateriau = (materiau.getQuantite() * materiau.getCoutUnitaire()) + materiau.getCoutTransport();
@@ -192,7 +192,6 @@ public class ProjetController {
                 })
                 .sum();
 
-        // Calculer le coût total de la main-d'œuvre
         double coutTotalMainOeuvre = mainOeuvres.stream()
                 .mapToDouble(mainOeuvre -> {
                     double coutMainOeuvre = mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail();
@@ -200,20 +199,20 @@ public class ProjetController {
                 })
                 .sum();
 
-        // Coût total avant marge
         double coutTotalAvantMarge = coutTotalMateriaux + coutTotalMainOeuvre;
 
-        // Marge bénéficiaire
         double margeBeneficiaire = projet.getMargeBeneficiaire();
         double montantMarge = coutTotalAvantMarge * (margeBeneficiaire / 100);
 
-        // Coût total final du projet
         double coutTotalFinal = coutTotalAvantMarge + montantMarge;
 
-        // Affichage des résultats
         System.out.printf("Coût total avant marge : %.2f €\n", coutTotalAvantMarge);
         System.out.printf("Marge bénéficiaire (%.2f%%) : %.2f €\n", margeBeneficiaire, montantMarge);
         System.out.printf("**Coût total final du projet : %.2f €**\n", coutTotalFinal);
+
+        projetService.updateCoutTotal(coutTotalFinal,idProjet);
+
+        devisController.EnregistrerDevis(coutTotalFinal,idProjet);
     }
 
 }
