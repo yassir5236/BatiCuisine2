@@ -89,9 +89,7 @@
                     double coutTransport = rs.getDouble("cout_transport");
                     double coefficientQuantite = rs.getDouble("coefficient_quantite");
 
-                    System.out.println(projetId);
 
-                    // Assurez-vous que le projet associé au matériau est récupéré
                     Projet projet = projetService.selectProjetById(projetId);
                     if (projet == null) {
                         System.out.println("not found");

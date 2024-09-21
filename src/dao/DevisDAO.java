@@ -1,38 +1,40 @@
-//package dao;
-//
-//import model.Devis;
-//import model.Projet;
-//import repository.DevisRepository;
-//import utils.DatabaseConnection;
-//
-//import java.sql.*;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class DevisDAO implements DevisRepository {
-//
-//    private static final String INSERT_DEVIS_SQL = "INSERT INTO devis (nom, montant, date_creation, projet_id) VALUES (?, ?, ?, ?)";
-//    private static final String SELECT_DEVIS_BY_ID = "SELECT * FROM devis WHERE id = ?";
-//    private static final String SELECT_ALL_DEVIS = "SELECT * FROM devis";
-//    private static final String UPDATE_DEVIS_SQL = "UPDATE devis SET nom = ?, montant = ?, date_creation = ?, projet_id = ? WHERE id = ?";
-//    private static final String DELETE_DEVIS_SQL = "DELETE FROM devis WHERE id = ?";
-//
-//    private Connection connection;
-//
-//    public DevisDAO() {
-//        this.connection = DatabaseConnection.getConnection();
-//    }
-//
-//    @Override
-//    public void insertDevis(Devis devis) throws SQLException {
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_DEVIS_SQL)) {
-//            preparedStatement.setString(1, Devis.getNom());
-//            preparedStatement.setDouble(2, devis.getMontant());
-//            preparedStatement.setDate(3, java.sql.Date.valueOf(devis.getDateCreation())); // Assuming LocalDate for date
-//            preparedStatement.setInt(4, devis.getProjet().getId());
-//            preparedStatement.executeUpdate();
-//        }
-//    }
+package dao;
+
+import model.Devis;
+import model.Projet;
+import repository.DevisRepository;
+import utils.DatabaseConnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DevisDAO implements DevisRepository {
+
+    private static final String INSERT_DEVIS_SQL = "INSERT INTO devis ( montant_estimate,date_emission, date_validate,accepte, projet_id) VALUES (?, ?, ?, ?, ?)";
+    private static final String SELECT_DEVIS_BY_ID = "SELECT * FROM devis WHERE id = ?";
+    private static final String SELECT_ALL_DEVIS = "SELECT * FROM devis";
+    private static final String UPDATE_DEVIS_SQL = "UPDATE devis SET nom = ?, montant = ?, date_creation = ?, projet_id = ? WHERE id = ?";
+    private static final String DELETE_DEVIS_SQL = "DELETE FROM devis WHERE id = ?";
+
+    private Connection connection;
+
+    public DevisDAO() {
+        this.connection = DatabaseConnection.getConnection();
+    }
+
+    @Override
+    public void insertDevis(Devis devis) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_DEVIS_SQL)) {
+            preparedStatement.setDouble(1, devis.getMontantEstimate());
+            preparedStatement.setDate(2, java.sql.Date.valueOf(devis.getDateEmission()));
+            preparedStatement.setDate(3, java.sql.Date.valueOf(devis.getDateValide()));
+            preparedStatement.setBoolean(4, devis.isAccepte());
+            preparedStatement.setInt(5, devis.getProjet().getId());
+            preparedStatement.executeUpdate();
+            System.out.println(" Devis enregistré avec succès ");
+        }
+    }
 //
 //    @Override
 //    public Devis selectDevis(int id) throws SQLException {
@@ -94,4 +96,4 @@
 //        }
 //        return rowDeleted;
 //    }
-//}
+}

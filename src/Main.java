@@ -99,6 +99,7 @@
 
 
 import controller.*;
+import service.ProjetService;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -110,18 +111,22 @@ public class Main {
         MateriauController materiauController = new MateriauController();
         MainOuvreController mainOuvreController = new MainOuvreController();
         CoutTotalController coutTotalController = new CoutTotalController();
+        ProjetService projetService = new ProjetService();
+        ProjetController projetController = new ProjetController();
         Scanner sc = new Scanner(System.in);
 
         while (true) {
             afficherMenuPrincipal();
             int choice = lireChoix(sc);
+            double TV;
 
             switch (choice) {
                 case 1:
                     gestionClient(sc);
                     break;
                 case 2:
-                    System.out.println("Affichage des projets existants ()");
+                    System.out.println("Affichage des projets existants ");
+                    projetController.afficherTousLesProjets();
                     break;
                 case 3:
                     boolean idValide = false;
@@ -130,14 +135,25 @@ public class Main {
                         try {
                             System.out.print("Entrez l'ID du projet ou tapez 0 pour retourner au menu précédent : ");
                             int idProjet = sc.nextInt();
+                            sc.nextLine();
+                            System.out.println("Souhaitez-vous appliquer une TVA au projet ? (true/false) :");
+                            boolean TvChoix = sc.nextBoolean();
+                            if(TvChoix){
+                                System.out.println("Entrez le pourcentage de TVA (%) :");
+                                TV = sc.nextDouble();
+                                coutTotalController.coutTotal(idProjet,TV);
+                                idValide=true;
+                            }else{
+                                coutTotalController.coutTotal(idProjet,TV=0);
+                                idValide=true;
+                            }
 
                             if (idProjet == 0) {
                                 System.out.println("Retour au menu précédent...");
                                 break;
                             }
 
-                            coutTotalController.coutTotal(idProjet);
-                            idValide=true;
+
 
                         } catch (InputMismatchException e) {
                             System.out.println("Erreur : Veuillez entrer un ID de projet valide (nombre entier).");
@@ -183,24 +199,24 @@ public class Main {
             System.out.print("Choisissez une option : ");
 
             int choice = lireChoix(sc);
+            double TV;
             switch (choice) {
                 case 1:
                     int idClient = clientController.recherchClient();
-//                    System.out.println("ID du client : " + idClient);
                     System.out.print("Souhaitez-vous continuer avec ce client ? (true/false) : ");
                     if (sc.nextBoolean()) {
                         int idProjet = projetController.addProjet(idClient);
-                        coutTotalController.coutTotal(idProjet);
+                        coutTotalController.coutTotal(idProjet,TV=0);
                     } else {
                         System.out.println("Action annulée.");
                     }
                     return;
                 case 2:
                     int idNewClient = clientController.addClient();
-//                    System.out.println("ID du nouveau client : " + idNewClient);
                     System.out.print("Souhaitez-vous continuer avec ce client ? (true/false) : ");
                     if (sc.nextBoolean()) {
                         projetController.addProjet(idNewClient);
+                        coutTotalController.coutTotal(idNewClient,TV=0);
                     } else {
                         System.out.println("Action annulée.");
                     }

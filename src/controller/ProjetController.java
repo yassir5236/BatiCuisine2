@@ -102,6 +102,7 @@ public class ProjetController {
     private final MainOuvreController mainOuvreController;
     private final MateriauService materiauService;
     private final MainOeuvreService mainOeuvreService;
+    private final DevisController devisController;
 
     public ProjetController() {
         this.projetService = new ProjetService();
@@ -110,6 +111,7 @@ public class ProjetController {
         this.mainOuvreController = new MainOuvreController();
         this.materiauService = new MateriauService();
         this.mainOeuvreService=new MainOeuvreService();
+        this.devisController=new DevisController();
     }
 
     public int  addProjet(int idClient) {
@@ -130,7 +132,6 @@ public class ProjetController {
 
         Projet projet = new Projet(nomProjet, margeBeneficiaire, etatProjet, 0, client, surface);
         int idProjet = projetService.addProjet(projet);
-        System.out.println(idProjet);
 
         System.out.println("--- Ajout des matériaux et main-d'œuvre ---");
         materiauController.addMateriau(idProjet);
@@ -174,18 +175,16 @@ public class ProjetController {
 
 
 
-    public void calculerCoutTotalDuProjet(int idProjet) {
+    public void calculerCoutTotalDuProjet(int idProjet ,double  TV) {
         Projet projet = projetService.selectProjetById(idProjet);
         if (projet == null) {
             System.out.println("Le projet avec l'ID spécifié n'existe pas.");
             return;
         }
 
-        // Récupérer les matériaux et la main-d'œuvre associés au projet
         List<Materiau> materiaux = materiauService.getMateriauxByProjet(idProjet);
         List<MainOeuvre> mainOeuvres = mainOeuvreService.getMainOeuvresByProjet(idProjet);
 
-        // Calculer le coût total des matériaux
         double coutTotalMateriaux = materiaux.stream()
                 .mapToDouble(materiau -> {
                     double coutMateriau = (materiau.getQuantite() * materiau.getCoutUnitaire()) + materiau.getCoutTransport();
@@ -193,7 +192,6 @@ public class ProjetController {
                 })
                 .sum();
 
-        // Calculer le coût total de la main-d'œuvre
         double coutTotalMainOeuvre = mainOeuvres.stream()
                 .mapToDouble(mainOeuvre -> {
                     double coutMainOeuvre = mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail();
@@ -201,21 +199,45 @@ public class ProjetController {
                 })
                 .sum();
 
-        // Coût total avant marge
         double coutTotalAvantMarge = coutTotalMateriaux + coutTotalMainOeuvre;
 
-        // Marge bénéficiaire
         double margeBeneficiaire = projet.getMargeBeneficiaire();
         double montantMarge = coutTotalAvantMarge * (margeBeneficiaire / 100);
 
-        // Coût total final du projet
         double coutTotalFinal = coutTotalAvantMarge + montantMarge;
 
-        // Affichage des résultats
         System.out.printf("Coût total avant marge : %.2f €\n", coutTotalAvantMarge);
         System.out.printf("Marge bénéficiaire (%.2f%%) : %.2f €\n", margeBeneficiaire, montantMarge);
-        System.out.printf("**Coût total final du projet : %.2f €**\n", coutTotalFinal);
+        System.out.printf("**Coût total final du projet : %.2f €**\n", coutTotalFinal+(TV*coutTotalFinal/100));
+
+        projetService.updateCoutTotal(coutTotalFinal,idProjet);
+
+        devisController.EnregistrerDevis(coutTotalFinal,idProjet);
     }
+
+
+
+
+
+
+
+
+    public void afficherTousLesProjets() {
+        List<Projet> projets = projetService.selectAllProjet();
+        for (Projet projet : projets) {
+            System.out.println("ID du projet : " + projet.getId());
+            System.out.println("Nom du projet : " + projet.getNomProjet());
+            System.out.println("Surface : " + projet.getSurface() + " m²");
+            System.out.println("Marge bénéficiaire : " + projet.getMargeBeneficiaire() + "%");
+            System.out.println("Coût total : " + projet.getCoutTotal() + " €");
+//            System.out.println("Client : " + projet.getClient().getNom());
+            System.out.println("Adresse du client : " + projet.getClient().getAdresse());
+            System.out.println("Téléphone du client : " + projet.getClient().getTelephone());
+            System.out.println("Le client est un professionnel ? " + (projet.getClient().isEstProfessionnel() ? "Oui" : "Non"));
+            System.out.println("------------------------------------------------------------");
+        }
+    }
+
 
 }
 
