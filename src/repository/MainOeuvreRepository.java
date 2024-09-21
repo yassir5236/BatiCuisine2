@@ -7,7 +7,7 @@ import java.util.List;
 public interface MainOeuvreRepository {
 
     void insertMainOeuvre(MainOeuvre mainOeuvre) throws SQLException;
-
+    List<MainOeuvre> selectAllMainOeuvres();
 //    MainOeuvre selectMainOeuvre(int id) throws SQLException;
 //
 //    List<MainOeuvre> selectAllMainOeuvres() throws SQLException;

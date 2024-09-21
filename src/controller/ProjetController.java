@@ -83,11 +83,16 @@ package controller;
 
 import model.Client;
 import model.Enum.EtatProjet;
+import model.MainOeuvre;
+import model.Materiau;
 import model.Projet;
 import service.ClientService;
+import service.MainOeuvreService;
+import service.MateriauService;
 import service.ProjetService;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class ProjetController {
@@ -95,12 +100,16 @@ public class ProjetController {
     private final Scanner scanner;
     private final MateriauController materiauController;
     private final MainOuvreController mainOuvreController;
+    private final MateriauService materiauService;
+    private final MainOeuvreService mainOeuvreService;
 
     public ProjetController() {
         this.projetService = new ProjetService();
         this.scanner = new Scanner(System.in);
         this.materiauController = new MateriauController();
         this.mainOuvreController = new MainOuvreController();
+        this.materiauService = new MateriauService();
+        this.mainOeuvreService=new MainOeuvreService();
     }
 
     public int  addProjet(int idClient) {
@@ -121,6 +130,7 @@ public class ProjetController {
 
         Projet projet = new Projet(nomProjet, margeBeneficiaire, etatProjet, 0, client, surface);
         int idProjet = projetService.addProjet(projet);
+        System.out.println(idProjet);
 
         System.out.println("--- Ajout des matériaux et main-d'œuvre ---");
         materiauController.addMateriau(idProjet);
@@ -158,5 +168,54 @@ public class ProjetController {
         }
         return etatProjet;
     }
+
+
+
+
+
+
+    public void calculerCoutTotalDuProjet(int idProjet) {
+        Projet projet = projetService.selectProjetById(idProjet);
+        if (projet == null) {
+            System.out.println("Le projet avec l'ID spécifié n'existe pas.");
+            return;
+        }
+
+        // Récupérer les matériaux et la main-d'œuvre associés au projet
+        List<Materiau> materiaux = materiauService.getMateriauxByProjet(idProjet);
+        List<MainOeuvre> mainOeuvres = mainOeuvreService.getMainOeuvresByProjet(idProjet);
+
+        // Calculer le coût total des matériaux
+        double coutTotalMateriaux = materiaux.stream()
+                .mapToDouble(materiau -> {
+                    double coutMateriau = (materiau.getQuantite() * materiau.getCoutUnitaire()) + materiau.getCoutTransport();
+                    return coutMateriau * (1 + materiau.getTauxTVA() / 100);
+                })
+                .sum();
+
+        // Calculer le coût total de la main-d'œuvre
+        double coutTotalMainOeuvre = mainOeuvres.stream()
+                .mapToDouble(mainOeuvre -> {
+                    double coutMainOeuvre = mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail();
+                    return coutMainOeuvre * (1 + mainOeuvre.getTauxTVA() / 100);
+                })
+                .sum();
+
+        // Coût total avant marge
+        double coutTotalAvantMarge = coutTotalMateriaux + coutTotalMainOeuvre;
+
+        // Marge bénéficiaire
+        double margeBeneficiaire = projet.getMargeBeneficiaire();
+        double montantMarge = coutTotalAvantMarge * (margeBeneficiaire / 100);
+
+        // Coût total final du projet
+        double coutTotalFinal = coutTotalAvantMarge + montantMarge;
+
+        // Affichage des résultats
+        System.out.printf("Coût total avant marge : %.2f €\n", coutTotalAvantMarge);
+        System.out.printf("Marge bénéficiaire (%.2f%%) : %.2f €\n", margeBeneficiaire, montantMarge);
+        System.out.printf("**Coût total final du projet : %.2f €**\n", coutTotalFinal);
+    }
+
 }
 

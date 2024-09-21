@@ -97,7 +97,138 @@ public class MateriauController {
         }
 
 
+    }
 
+
+
+
+
+
+
+    public void addMateriau2(int idProjet) {
+
+        System.out.println("Entrez le nom du matériau");
+        String nom = scanner.nextLine();
+
+        System.out.println("Entrez le coût unitaire de ce matériau (€/m²):");
+        double coutUnitaire = scanner.nextDouble();
+        scanner.nextLine();
+
+        System.out.println("Entrez la quantité de ce matériau:");
+        double quantite = scanner.nextDouble();
+
+        System.out.println("Entrez le coût de transport de ce matériau (€):");
+        double coutTransport = scanner.nextDouble();
+
+        System.out.println("Entrez le coefficient de qualité du matériau (1.0 = standard, > 1.0 = haute qualité):");
+        double coefficientQuantite = scanner.nextDouble();
+
+        System.out.println("Entrez tauxTVA:");
+        double tauxTVA = scanner.nextDouble();
+
+        scanner.nextLine();
+
+        System.out.println("Entrez le type de composant (MATERIAU, MAIN_DOEUVRE):");
+        String typeComposantStr = scanner.nextLine().toUpperCase();
+
+        TypeComposant typeComposant;
+        try {
+            typeComposant = TypeComposant.valueOf(typeComposantStr);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Type de composant invalide.");
+            return;
+        }
+
+//        System.out.println("Entrez l'ID du projet:");
+//        int projetId = scanner.nextInt();
+//        scanner.nextLine();
+
+        int projetId = idProjet;
+
+
+
+        Projet projet = projetService.selectProjetById(projetId);
+        if (projet == null) {
+            System.out.println("Le projet avec l'ID spécifié n'existe pas.");
+            return;
+        }
+
+        final MateriauDto materiauDto = new MateriauDto(
+                nom,
+                typeComposant,
+                tauxTVA,
+                projetId,
+                coutUnitaire,
+                quantite,
+                coutTransport,
+                coefficientQuantite
+        );
+
+
+        materiauService.ajouterMateriau(materiauDto);
+        System.out.println("Materiau ajouté avec succès.\n");
+        System.out.println("voulez vous inserer un autre materiau (true/false) ?");
+        boolean choix = scanner.nextBoolean();
+        scanner.nextLine();
+        if (choix) {
+            addMateriau(idProjet);
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void afficherDetailDesCouts(int  idProjet) {
+
+        List<Materiau> materiaux = materiauService.getMateriauxByProjet(idProjet);
+
+        if (materiaux.isEmpty()) {
+            System.out.println("Aucun matériau trouvé pour ce projet.");
+            return;
+        }
+
+        // Détail des coûts
+        System.out.println("--- Détail des Coûts ---");
+        double coutTotalMateriaux = materiaux.stream()
+                .peek(materiau -> {
+                    double coutMateriau = materiau.getQuantite() * materiau.getCoutUnitaire();
+                    System.out.printf("%s : %.2f € (quantité : %.2f %s, coût unitaire : %.2f €/unité, transport : %.2f €)\n",
+                            materiau.getNom(),
+                            coutMateriau + materiau.getCoutTransport(),
+                            materiau.getQuantite(),
+                            "m²", // Ou autre unité si nécessaire
+                            materiau.getCoutUnitaire(),
+                            materiau.getCoutTransport());
+                })
+                .mapToDouble(materiau -> (materiau.getQuantite() * materiau.getCoutUnitaire()) + materiau.getCoutTransport())
+                .sum();
+
+        // Coût total avant TVA
+        System.out.printf("\n**Coût total des matériaux avant TVA : %.2f €**\n", coutTotalMateriaux);
+
+        // Coût total avec TVA
+        double coutTotalAvecTVA = materiaux.stream()
+                .mapToDouble(materiau -> {
+                    double coutMateriau = (materiau.getQuantite() * materiau.getCoutUnitaire()) + materiau.getCoutTransport();
+                    return coutMateriau * (1 + materiau.getTauxTVA() / 100);
+                })
+                .sum();
+
+        System.out.printf("**Coût total des matériaux avec TVA (20%%) : %.2f €**\n", coutTotalAvecTVA);
     }
 
 

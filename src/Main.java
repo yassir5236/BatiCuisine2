@@ -149,6 +149,9 @@ public class Main {
                 case 4:
                     System.out.println("Quitter le programme...");
                     return;
+                case 5:
+                    int idprojet2 = sc.nextInt();
+                    materiauController.addMateriau2(idprojet2);                    ;
                 default:
                     System.out.println("Choix incorrect, veuillez réessayer.");
                     break;

@@ -8,6 +8,9 @@ import model.Projet;
 import model.dto.MateriauDto;
 import service.interfaces.IMateriauService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class MateriauService implements IMateriauService {
     private final ProjetDAO projetDAO ;
     private final MateriauDAO materiauDAO ;
@@ -23,6 +26,7 @@ public class MateriauService implements IMateriauService {
     public void ajouterMateriau(MateriauDto materiauDto) {
         Projet projet = projetService.selectProjetById(materiauDto.projetId());
 
+
         Materiau materiau = new Materiau(materiauDto.nom() , materiauDto.typeComposant() ,materiauDto.tauxTVA() ,projet,materiauDto.coutUnitaire(),materiauDto.quantite(),materiauDto.coutTransport() ,materiauDto.coefficientQuantite());
         try{
             materiauDAO.insertMateriau(materiau);
@@ -30,6 +34,15 @@ public class MateriauService implements IMateriauService {
             e.printStackTrace();
         }
     }
+
+    public List<Materiau> getMateriauxByProjet(int projetId) {
+        // Simule la récupération de tous les matériaux associés à un projet
+        return materiauDAO.selectAllMateriaux().stream()
+                .filter(materiau -> materiau.getProjet().getId() == projetId)
+                .collect(Collectors.toList());
+    }
+
+
 
 
 

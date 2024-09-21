@@ -7,7 +7,7 @@ import java.util.List;
 public interface MateriauRepository {
 
     void insertMateriau(Materiau materiau) throws SQLException;
-
+    List<Materiau> selectAllMateriaux();
 //    Materiau selectMateriau(int id) throws SQLException;
 //
 //    List<Materiau> selectAllMateriaux() throws SQLException;
