@@ -37,8 +37,8 @@ public void coutTotal(int idProjet ) {
         }
 
         System.out.println("\n");
-        System.out.println("-- Détail des Coûts--");
-        materiauController.afficherDetailDesCouts(idProjet);
+//        System.out.println("-- Détail des Coûts--");
+        materiauController.afficherDetailDesCoutsMateriau(idProjet);
         mainOuvreController.afficherDetailDesCoutsMainOeuvre(idProjet);
         projetController.calculerCoutTotalDuProjet(idProjet);
 

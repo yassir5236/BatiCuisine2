@@ -192,7 +192,7 @@ public class MateriauController {
 
 
 
-    public void afficherDetailDesCouts(int  idProjet) {
+    public void afficherDetailDesCoutsMateriau(int  idProjet) {
 
         List<Materiau> materiaux = materiauService.getMateriauxByProjet(idProjet);
 
@@ -210,17 +210,17 @@ public class MateriauController {
                             materiau.getNom(),
                             coutMateriau + materiau.getCoutTransport(),
                             materiau.getQuantite(),
-                            "m²", // Ou autre unité si nécessaire
+                            "m²",
                             materiau.getCoutUnitaire(),
                             materiau.getCoutTransport());
                 })
                 .mapToDouble(materiau -> (materiau.getQuantite() * materiau.getCoutUnitaire()) + materiau.getCoutTransport())
                 .sum();
 
-        // Coût total avant TVA
+
         System.out.printf("\n**Coût total des matériaux avant TVA : %.2f €**\n", coutTotalMateriaux);
 
-        // Coût total avec TVA
+
         double coutTotalAvecTVA = materiaux.stream()
                 .mapToDouble(materiau -> {
                     double coutMateriau = (materiau.getQuantite() * materiau.getCoutUnitaire()) + materiau.getCoutTransport();

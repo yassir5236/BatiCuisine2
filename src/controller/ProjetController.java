@@ -130,7 +130,6 @@ public class ProjetController {
 
         Projet projet = new Projet(nomProjet, margeBeneficiaire, etatProjet, 0, client, surface);
         int idProjet = projetService.addProjet(projet);
-        System.out.println(idProjet);
 
         System.out.println("--- Ajout des matériaux et main-d'œuvre ---");
         materiauController.addMateriau(idProjet);

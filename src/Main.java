@@ -186,7 +186,6 @@ public class Main {
             switch (choice) {
                 case 1:
                     int idClient = clientController.recherchClient();
-//                    System.out.println("ID du client : " + idClient);
                     System.out.print("Souhaitez-vous continuer avec ce client ? (true/false) : ");
                     if (sc.nextBoolean()) {
                         int idProjet = projetController.addProjet(idClient);
@@ -197,10 +196,10 @@ public class Main {
                     return;
                 case 2:
                     int idNewClient = clientController.addClient();
-//                    System.out.println("ID du nouveau client : " + idNewClient);
                     System.out.print("Souhaitez-vous continuer avec ce client ? (true/false) : ");
                     if (sc.nextBoolean()) {
                         projetController.addProjet(idNewClient);
+                        coutTotalController.coutTotal(idNewClient);
                     } else {
                         System.out.println("Action annulée.");
                     }
