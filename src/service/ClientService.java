@@ -75,4 +75,13 @@ public class ClientService implements IClientService {
         }
     }
 
+
+    public void AddRemise(double clientRemise , int idClient){
+        try{
+            clientDAO.AddRemise(clientRemise, idClient);
+        }catch (Exception e){
+            System.out.println("Error adding remise: " + e.getMessage());
+        }
+    }
+
 }

@@ -228,6 +228,7 @@ public class Main {
         int idClient = clientController.recherchClient();
         System.out.print("Souhaitez-vous continuer avec ce client ? (true/false) : ");
         if (sc.nextBoolean()) {
+
             int idProjet = projetController.addProjet(idClient);
             coutTotalController.coutTotal(idProjet);
         } else {

@@ -17,6 +17,7 @@ public class ClientDAO implements ClientRepository {
     private static final String SELECT_ALL_CLIENTS = "SELECT * FROM client";
     private static final String UPDATE_CLIENT_SQL = "UPDATE client SET nom = ?, adresse = ?, telephone = ?, est_professionnel = ? WHERE id = ?";
     private static final String DELETE_CLIENT_SQL = "DELETE FROM client WHERE id = ?";
+    private static final String UPDATE_REMISE = "UPDATE client SET remise = ? WHERE id = ?";
 
     private Connection connection;
 
@@ -113,7 +114,6 @@ public class ClientDAO implements ClientRepository {
             ps.executeQuery();
             ResultSet rs = ps.getResultSet();
             if (rs.next()) {
-                System.out.println("Client trouvé !");
                 client = new Client(
                         rs.getInt("id"),
                         rs.getString("nom"),
@@ -131,5 +131,17 @@ public class ClientDAO implements ClientRepository {
 
         }
         return client;
+    }
+
+
+    public void AddRemise(double clientRemise, int idClient) throws SQLException {
+        try (PreparedStatement ps = connection.prepareStatement(UPDATE_REMISE)){
+            ps.setDouble(1, clientRemise);
+            ps.setInt(2,idClient);
+            ps.executeUpdate();
+            System.out.println("Remise added !");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }

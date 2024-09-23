@@ -11,7 +11,6 @@ public class ClientController {
     private final ClientService clientService;
     private final Scanner scanner;
 
-    // Constructor to initialize services and scanner
     public ClientController() {
         this.clientService = new ClientService();
         this.scanner = new Scanner(System.in);
@@ -34,13 +33,29 @@ public class ClientController {
         int idNewClient = clientService.addClient(client);
         System.out.println("Client added successfully.");
 
+
+        Client clientFound = clientService.rechercheClient(nom);
+
+        if (estProfessionnel) {
+
+            System.out.println("prendre en compte que ce client est proffissionel vous voulez appliquer des remises ? (true/false)");
+            boolean choix = scanner.nextBoolean();
+            if (choix) {
+                System.out.println("Entrer remise pour ce client en (%)");
+                double clientRemise= scanner.nextDouble();
+
+                clientService.AddRemise(clientRemise,clientFound.getId());
+            }
+
+        }
+
         return idNewClient;
     }
 
     public void updateClient() {
         System.out.println("Enter the ID of the client:");
         int id = scanner.nextInt();
-        scanner.nextLine();  // Consume newline
+        scanner.nextLine();
 
         System.out.println("Enter the new name of the client:");
         String nom = scanner.nextLine();
@@ -67,7 +82,7 @@ public class ClientController {
     public void getClient() {
         System.out.println("Enter the ID of the client:");
         int id = scanner.nextInt();
-        scanner.nextLine();  // Consume newline
+        scanner.nextLine();
 
         Client client = clientService.getClient(id);
         if (client != null) {
@@ -85,7 +100,7 @@ public class ClientController {
     public void deleteClient() {
         System.out.println("Enter the ID of the client:");
         int id = scanner.nextInt();
-        scanner.nextLine();  // Consume newline
+        scanner.nextLine();
 
         boolean deleted = clientService.deleteClient(id);
         if (deleted) {
@@ -119,6 +134,18 @@ public class ClientController {
             System.out.println("Address: " + client.getAdresse());
             System.out.println("Phone: " + client.getTelephone());
             System.out.println("Professional: " + client.isEstProfessionnel());
+
+            if (client.isEstProfessionnel()) {
+
+                System.out.println("prendre en compte que ce client est proffissionel vous voulez appliquer des remises ? (true/false)");
+                boolean choix = scanner.nextBoolean();
+                if (choix) {
+                    System.out.println("Entrer remise pour ce client en (%)");
+                    double clientRemise= scanner.nextDouble();
+                     clientService.AddRemise(clientRemise,client.getId());
+                }
+
+            }
         }
         return client.getId();
 
