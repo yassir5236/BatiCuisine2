@@ -207,7 +207,7 @@ public class MateriauController {
                             materiau.getNom(),
                             coutMateriau + materiau.getCoutTransport(),
                             materiau.getQuantite(),
-                            "m²",  // Vous pouvez adapter l'unité selon vos besoins
+                            "m²",
                             materiau.getCoutUnitaire(),
                             materiau.getCoefficientQuantite(),
                             materiau.getCoutTransport());

@@ -1,6 +1,8 @@
 package model;
 import model.Enum.EtatProjet;
 
+import java.util.List;
+
 public class Projet {
     private int id;
     private String nomProjet;
@@ -9,6 +11,8 @@ public class Projet {
     private double coutTotal;
     private double surface;
     private Client client;
+    private List<Composant> composants;
+
 
 
     public Projet(int id, String nomProjet, double margeBeneficiaire, EtatProjet etatProjet, double coutTotal, Client client, double surface) {
@@ -117,6 +121,13 @@ public class Projet {
         this.surface = surface;
     }
 
+    public List<Composant> getComposants() {
+        return composants;
+    }
+
+    public void setComposants(List<Composant> composants) {
+        this.composants = composants;
+    }
     @Override
     public String toString() {
         return "Projet{" +

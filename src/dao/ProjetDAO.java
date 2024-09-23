@@ -174,7 +174,7 @@ public class ProjetDAO implements ProjetRepository {
 
     public Projet  selectProjetById(int id) {
         Projet  projet = null;
-        String query = "SELECT projet.nom_projet,projet.surface, projet.marge_beneficiaire,client.nom,client.adresse  from projet\n" +
+        String query = "SELECT client.remise ,projet.nom_projet,projet.surface, projet.marge_beneficiaire,client.nom,client.adresse  from projet\n" +
                 "inner join client on client.id=projet.client_id\n" +
                 "WHERE projet.id = ? ;";
 
@@ -189,10 +189,12 @@ public class ProjetDAO implements ProjetRepository {
                 double margeBeneficiaire = rs.getDouble("marge_beneficiaire");
                 String nom = rs.getString("nom");
                 String adresse = rs.getString("adresse");
+                double remise = rs.getDouble("remise");
 
                 Client client = new Client();
                 client.setNom(nom);
                 client.setAdresse(adresse);
+                client.setRemise(remise);
 
 
                 projet = new Projet(

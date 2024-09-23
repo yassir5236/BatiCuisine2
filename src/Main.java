@@ -316,12 +316,12 @@ public class Main {
                 devisController.DisplayAllDevis();
                 break;
             case 2:
+                System.out.println("Retour au menu principal...");
                 return;
+            default:
+                System.out.println("Choix incorrect, veuillez reessayer.");
+                break;
         }
-
-
-
-
 
     }
 }

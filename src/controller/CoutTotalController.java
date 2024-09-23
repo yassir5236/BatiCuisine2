@@ -38,9 +38,11 @@ public void coutTotal(int idProjet ) {
 
         System.out.println("\n");
 
+        double remise = projet.getClient().getRemise();
+
         materiauController.afficherDetailDesCoutsMateriau(idProjet);
         mainOuvreController.afficherDetailDesCoutsMainOeuvre(idProjet);
-        projetController.calculerCoutTotalDuProjet(idProjet);
+        projetController.calculerCoutTotalDuProjet(idProjet,remise);
 
 
 
