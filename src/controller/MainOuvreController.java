@@ -134,7 +134,7 @@ public class MainOuvreController {
         System.out.print("Type de composant (MATERIAU, MAIN_DOEUVRE): ");
         TypeComposant typeComposant = TypeComposant.valueOf(scanner.nextLine().toUpperCase());
 
-        System.out.print("Taux TVA: ");
+        System.out.print("Entrez le taux de TVA. S'il n'existe pas, entrez 0 : ");
         double tauxTVA = scanner.nextDouble();
 
         System.out.print("Taux horaire (€/m²): ");
@@ -168,7 +168,6 @@ public class MainOuvreController {
     }
 
 
-
     public void afficherDetailDesCoutsMainOeuvre(int idProjet) {
         List<MainOeuvre> mainOeuvres = mainOeuvreService.getMainOeuvresByProjet(idProjet);
 
@@ -177,11 +176,10 @@ public class MainOuvreController {
             return;
         }
 
-
         System.out.println("--- Détail des Coûts de Main-d'œuvre ---");
         double coutTotalMainOeuvre = mainOeuvres.stream()
                 .peek(mainOeuvre -> {
-                    double coutMainOeuvre = mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail();
+                    double coutMainOeuvre = mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail() * mainOeuvre.getProductiviteOuvrier();
                     System.out.printf("%s : %.2f € (taux horaire : %.2f €/h, heures travaillées : %.2f h, productivité : %.2f)\n",
                             mainOeuvre.getNom(),
                             coutMainOeuvre,
@@ -189,17 +187,15 @@ public class MainOuvreController {
                             mainOeuvre.getHeuresTravail(),
                             mainOeuvre.getProductiviteOuvrier());
                 })
-                .mapToDouble(mainOeuvre -> mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail())
+                .mapToDouble(mainOeuvre -> mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail() * mainOeuvre.getProductiviteOuvrier())
                 .sum();
 
-
-        System.out.printf("\n**Coût total de la main-d'œuvre avant TVA  : %.2f €**\n", coutTotalMainOeuvre);
+        System.out.printf("\n**Coût total de la main-d'œuvre avant TVA : %.2f €**\n", coutTotalMainOeuvre);
 
         double tauxTVA = mainOeuvres.stream()
                 .mapToDouble(MainOeuvre::getTauxTVA)
                 .findFirst()
                 .orElse(0);
-
 
         double coutTotalAvecTVA = coutTotalMainOeuvre * (1 + tauxTVA / 100);
 

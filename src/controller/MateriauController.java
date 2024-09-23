@@ -123,7 +123,7 @@ public class MateriauController {
         System.out.println("Entrez le coefficient de qualité du matériau (1.0 = standard, > 1.0 = haute qualité):");
         double coefficientQuantite = scanner.nextDouble();
 
-        System.out.println("Entrez tauxTVA:");
+        System.out.println("Entrez le taux de TVA. S'il n'existe pas, entrez 0 : ");
         double tauxTVA = scanner.nextDouble();
 
         scanner.nextLine();
@@ -190,7 +190,7 @@ public class MateriauController {
 
 
 
-    public void afficherDetailDesCoutsMateriau(int  idProjet) {
+    public void afficherDetailDesCoutsMateriau(int idProjet) {
 
         List<Materiau> materiaux = materiauService.getMateriauxByProjet(idProjet);
 
@@ -202,18 +202,18 @@ public class MateriauController {
         System.out.println("--- Détail des Coûts ---");
         double coutTotalMateriaux = materiaux.stream()
                 .peek(materiau -> {
-                    double coutMateriau = materiau.getQuantite() * materiau.getCoutUnitaire();
-                    System.out.printf("%s : %.2f € (quantité : %.2f %s, coût unitaire : %.2f €/unité, transport : %.2f €)\n",
+                    double coutMateriau = materiau.getQuantite() * materiau.getCoutUnitaire() * materiau.getCoefficientQuantite();
+                    System.out.printf("%s : %.2f € (quantité : %.2f %s, coût unitaire : %.2f €/unité, CoefficientQuantite : %.2f, transport : %.2f €)\n",
                             materiau.getNom(),
                             coutMateriau + materiau.getCoutTransport(),
                             materiau.getQuantite(),
-                            "m²",
+                            "m²",  // Vous pouvez adapter l'unité selon vos besoins
                             materiau.getCoutUnitaire(),
+                            materiau.getCoefficientQuantite(),
                             materiau.getCoutTransport());
                 })
-                .mapToDouble(materiau -> (materiau.getQuantite() * materiau.getCoutUnitaire()) + materiau.getCoutTransport())
+                .mapToDouble(materiau -> (materiau.getQuantite() * materiau.getCoutUnitaire() * materiau.getCoefficientQuantite()) + materiau.getCoutTransport())
                 .sum();
-
 
         System.out.printf("\n**Coût total des matériaux avant TVA : %.2f €**\n", coutTotalMateriaux);
 
@@ -224,13 +224,14 @@ public class MateriauController {
 
         double coutTotalAvecTVA = materiaux.stream()
                 .mapToDouble(materiau -> {
-                    double coutMateriau = (materiau.getQuantite() * materiau.getCoutUnitaire()) + materiau.getCoutTransport();
+                    double coutMateriau = (materiau.getQuantite() * materiau.getCoutUnitaire() * materiau.getCoefficientQuantite()) + materiau.getCoutTransport();
                     return coutMateriau * (1 + materiau.getTauxTVA() / 100);
                 })
                 .sum();
 
-        System.out.printf("**Coût total des matériaux avec TVA (%.2f%%) : %.2f €**\n",tauxTVA, coutTotalAvecTVA);
+        System.out.printf("**Coût total des matériaux avec TVA (%.2f%%) : %.2f €**\n", tauxTVA, coutTotalAvecTVA);
     }
+
 
 
 
