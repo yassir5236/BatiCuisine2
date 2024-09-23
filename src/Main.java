@@ -135,18 +135,10 @@ public class Main {
                         try {
                             System.out.print("Entrez l'ID du projet ou tapez 0 pour retourner au menu précédent : ");
                             int idProjet = sc.nextInt();
-                            sc.nextLine();
-                            System.out.println("Souhaitez-vous appliquer une TVA au projet ? (true/false) :");
-                            boolean TvChoix = sc.nextBoolean();
-                            if(TvChoix){
-                                System.out.println("Entrez le pourcentage de TVA (%) :");
-                                TV = sc.nextDouble();
-                                coutTotalController.coutTotal(idProjet,TV);
+
+                                coutTotalController.coutTotal(idProjet);
                                 idValide=true;
-                            }else{
-                                coutTotalController.coutTotal(idProjet,TV=0);
-                                idValide=true;
-                            }
+
 
                             if (idProjet == 0) {
                                 System.out.println("Retour au menu précédent...");
@@ -199,14 +191,14 @@ public class Main {
             System.out.print("Choisissez une option : ");
 
             int choice = lireChoix(sc);
-            double TV;
+
             switch (choice) {
                 case 1:
                     int idClient = clientController.recherchClient();
                     System.out.print("Souhaitez-vous continuer avec ce client ? (true/false) : ");
                     if (sc.nextBoolean()) {
                         int idProjet = projetController.addProjet(idClient);
-                        coutTotalController.coutTotal(idProjet,TV=0);
+                        coutTotalController.coutTotal(idProjet);
                     } else {
                         System.out.println("Action annulée.");
                     }
@@ -216,7 +208,7 @@ public class Main {
                     System.out.print("Souhaitez-vous continuer avec ce client ? (true/false) : ");
                     if (sc.nextBoolean()) {
                         projetController.addProjet(idNewClient);
-                        coutTotalController.coutTotal(idNewClient,TV=0);
+                        coutTotalController.coutTotal(idNewClient);
                     } else {
                         System.out.println("Action annulée.");
                     }
@@ -235,7 +227,7 @@ public class Main {
         while (true) {
             try {
                 choix = sc.nextInt();
-                return choix; // Retourne le choix si la saisie est correcte
+                return choix;
             } catch (InputMismatchException e) {
                 System.out.println("Saisie invalide, veuillez entrer un nombre.");
                 sc.next();

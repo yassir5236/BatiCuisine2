@@ -177,7 +177,7 @@ public class MainOuvreController {
             return;
         }
 
-        // Détail des coûts
+
         System.out.println("--- Détail des Coûts de Main-d'œuvre ---");
         double coutTotalMainOeuvre = mainOeuvres.stream()
                 .peek(mainOeuvre -> {
@@ -192,14 +192,18 @@ public class MainOuvreController {
                 .mapToDouble(mainOeuvre -> mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail())
                 .sum();
 
-        // Coût total avant TVA
-        System.out.printf("\n**Coût total de la main-d'œuvre avant TVA : %.2f €**\n", coutTotalMainOeuvre);
 
-        // Coût total avec TVA
-        double tauxTVA = 20; // Par exemple, 20%
+        System.out.printf("\n**Coût total de la main-d'œuvre avant TVA  : %.2f €**\n", coutTotalMainOeuvre);
+
+        double tauxTVA = mainOeuvres.stream()
+                .mapToDouble(MainOeuvre::getTauxTVA)
+                .findFirst()
+                .orElse(0);
+
+
         double coutTotalAvecTVA = coutTotalMainOeuvre * (1 + tauxTVA / 100);
 
-        System.out.printf("**Coût total de la main-d'œuvre avec TVA (%d%%) : %.2f €**\n", (int) tauxTVA, coutTotalAvecTVA);
+        System.out.printf("**Coût total de la main-d'œuvre avec TVA (%.2f%%) : %.2f €**\n", tauxTVA, coutTotalAvecTVA);
     }
 
 

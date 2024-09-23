@@ -139,9 +139,7 @@ public class MateriauController {
             return;
         }
 
-//        System.out.println("Entrez l'ID du projet:");
-//        int projetId = scanner.nextInt();
-//        scanner.nextLine();
+
 
         int projetId = idProjet;
 
@@ -201,7 +199,6 @@ public class MateriauController {
             return;
         }
 
-        // Détail des coûts
         System.out.println("--- Détail des Coûts ---");
         double coutTotalMateriaux = materiaux.stream()
                 .peek(materiau -> {
@@ -220,6 +217,10 @@ public class MateriauController {
 
         System.out.printf("\n**Coût total des matériaux avant TVA : %.2f €**\n", coutTotalMateriaux);
 
+        double tauxTVA = materiaux.stream()
+                .mapToDouble(Materiau::getTauxTVA)
+                .findFirst()
+                .orElse(0);
 
         double coutTotalAvecTVA = materiaux.stream()
                 .mapToDouble(materiau -> {
@@ -228,7 +229,7 @@ public class MateriauController {
                 })
                 .sum();
 
-        System.out.printf("**Coût total des matériaux avec TVA (20%%) : %.2f €**\n", coutTotalAvecTVA);
+        System.out.printf("**Coût total des matériaux avec TVA (%.2f%%) : %.2f €**\n",tauxTVA, coutTotalAvecTVA);
     }
 
 

@@ -56,14 +56,12 @@ public class ProjetDAO implements ProjetRepository {
 
 
     public void updateCoutTotal(double coutTotal, int id) throws SQLException {
-        System.out.println(coutTotal);
-        System.out.println(id);
+
         String sql = "UPDATE projet SET cout_total = ? WHERE id = ?";
         try(PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setDouble(1, coutTotal);
             ps.setInt(2,id);
             ps.executeUpdate();
-            System.out.println("cout updated");
 
         }catch(SQLException e) {
             e.printStackTrace();
