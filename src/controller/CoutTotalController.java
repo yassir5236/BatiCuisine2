@@ -22,7 +22,7 @@ private final   ProjetController    projetController;
        this.projetController  = new ProjetController();
    }
 
-public void coutTotal(int idProjet ,double TV) {
+public void coutTotal(int idProjet ) {
         System.out.println(" Calcul du coût en cours... \n ");
         System.out.println("--- Résultat du Calcul---");
 
@@ -37,10 +37,12 @@ public void coutTotal(int idProjet ,double TV) {
         }
 
         System.out.println("\n");
-//        System.out.println("-- Détail des Coûts--");
+
+        double remise = projet.getClient().getRemise();
+
         materiauController.afficherDetailDesCoutsMateriau(idProjet);
         mainOuvreController.afficherDetailDesCoutsMainOeuvre(idProjet);
-        projetController.calculerCoutTotalDuProjet(idProjet,TV);
+        projetController.calculerCoutTotalDuProjet(idProjet,remise);
 
 
 

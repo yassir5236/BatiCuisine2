@@ -175,7 +175,7 @@ public class ProjetController {
 
 
 
-    public void calculerCoutTotalDuProjet(int idProjet ,double  TV) {
+    public void calculerCoutTotalDuProjet(int idProjet ,double remise) {
         Projet projet = projetService.selectProjetById(idProjet);
         if (projet == null) {
             System.out.println("Le projet avec l'ID spécifié n'existe pas.");
@@ -203,13 +203,22 @@ public class ProjetController {
 
         double margeBeneficiaire = projet.getMargeBeneficiaire();
         double montantMarge = coutTotalAvantMarge * (margeBeneficiaire / 100);
-
         double coutTotalFinal = coutTotalAvantMarge + montantMarge;
+        double coutTotalFinalRemise = coutTotalFinal;
+
+        if ( remise > 0) {
+            coutTotalFinalRemise = coutTotalFinal - (coutTotalFinal * remise / 100);
+        }
 
         System.out.printf("Coût total avant marge : %.2f €\n", coutTotalAvantMarge);
         System.out.printf("Marge bénéficiaire (%.2f%%) : %.2f €\n", margeBeneficiaire, montantMarge);
-        System.out.printf("**Coût total final du projet : %.2f €**\n", coutTotalFinal+(TV*coutTotalFinal/100));
 
+        if(remise > 0){
+            System.out.printf("Valeur de la remise (%.2f%%) : %.2f €\n", remise, coutTotalFinal * remise / 100);
+
+        }
+
+        System.out.printf("**Coût total final du projet : %.2f €**\n", coutTotalFinalRemise);
         projetService.updateCoutTotal(coutTotalFinal,idProjet);
 
         devisController.EnregistrerDevis(coutTotalFinal,idProjet);
@@ -230,7 +239,6 @@ public class ProjetController {
             System.out.println("Surface : " + projet.getSurface() + " m²");
             System.out.println("Marge bénéficiaire : " + projet.getMargeBeneficiaire() + "%");
             System.out.println("Coût total : " + projet.getCoutTotal() + " €");
-//            System.out.println("Client : " + projet.getClient().getNom());
             System.out.println("Adresse du client : " + projet.getClient().getAdresse());
             System.out.println("Téléphone du client : " + projet.getClient().getTelephone());
             System.out.println("Le client est un professionnel ? " + (projet.getClient().isEstProfessionnel() ? "Oui" : "Non"));

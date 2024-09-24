@@ -36,7 +36,6 @@ public class MateriauService implements IMateriauService {
     }
 
     public List<Materiau> getMateriauxByProjet(int projetId) {
-        // Simule la récupération de tous les matériaux associés à un projet
         return materiauDAO.selectAllMateriaux().stream()
                 .filter(materiau -> materiau.getProjet().getId() == projetId)
                 .collect(Collectors.toList());

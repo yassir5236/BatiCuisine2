@@ -28,6 +28,15 @@ public class Devis {
         this.projet = projet;
     }
 
+    public Devis(int id,double montantEstimate, LocalDate dateEmission, LocalDate dateValide, boolean accepte) {
+        this.id = id ;
+        this.montantEstimate = montantEstimate;
+        this.dateEmission = dateEmission;
+        this.dateValide = dateValide;
+        this.accepte = accepte;
+
+    }
+
     // Getters and Setters
     public int getId() {
         return id;

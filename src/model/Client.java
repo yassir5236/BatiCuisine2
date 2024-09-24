@@ -7,6 +7,9 @@ public class Client {
     private String adresse;
     private String telephone;
     private boolean est_Professionnel;
+    private double remise;
+
+
 
     public Client(int id, String nom, String adresse, String telephone, boolean estProfessionnel) {
         this.id = id;
@@ -22,6 +25,15 @@ public class Client {
         this.adresse = adresse;
         this.telephone = telephone;
         this.est_Professionnel = estProfessionnel;
+    }
+
+    public Client( String nom, String adresse, String telephone, boolean estProfessionnel , double remise) {
+
+        this.nom = nom;
+        this.adresse = adresse;
+        this.telephone = telephone;
+        this.est_Professionnel = estProfessionnel;
+        this.remise = remise ;
     }
 
     public Client() {
@@ -70,6 +82,14 @@ public class Client {
 
     public void setEstProfessionnel(boolean est_Professionnel) {
         this.est_Professionnel = est_Professionnel;
+    }
+
+    public double getRemise() {
+        return remise;
+    }
+
+    public void setRemise(double remise) {
+        this.remise = remise;
     }
 
     @Override

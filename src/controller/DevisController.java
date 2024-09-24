@@ -8,6 +8,7 @@ import service.ProjetService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
 public class DevisController {
@@ -23,36 +24,6 @@ private final ProjetService projetService;
       this.projetService = new ProjetService();
     }
 
-//    public void EnregistrerDevis(double coutTotalFinal,int idProjet){
-//        System.out.println("--- Enregistrement du Devis---");
-//        System.out.println("Entrez la date d'émission du devis (format : jj/mm/aaaa) : ");
-//        String date = sc.nextLine();
-//        LocalDate devisDate = LocalDate.parse(date);
-//
-//        System.out.println("Entrez la date de validité du devis (format : yyyy/mm/jj) : ");
-//        String dateValide = sc.nextLine();
-//        LocalDate devisValid = LocalDate.parse(dateValide);
-//
-//        System.out.println("Souhaitez-vous enregistrer le devis ? (true/false)  : ");
-//
-//        boolean accepteEnregistrer =sc.nextBoolean();
-//        if(accepteEnregistrer) {
-//
-//            Projet projet = projetService.selectProjetById(idProjet);
-//            Devis devis = new Devis(coutTotalFinal, devisDate, devisValid, accepteEnregistrer, projet);
-//            devisService.addDevis(devis);
-//            System.out.println("--  Fin du projet --");
-//
-//        }
-//
-//
-//
-//
-//    }
-
-
-
-
 
 
 
@@ -64,7 +35,6 @@ private final ProjetService projetService;
 
         System.out.println("--- Enregistrement du Devis ---");
 
-        // Date d'émission du devis
         LocalDate devisDate = null;
         while (devisDate == null) {
             try {
@@ -76,7 +46,6 @@ private final ProjetService projetService;
             }
         }
 
-        // Date de validité du devis
         LocalDate devisValid = null;
         while (devisValid == null) {
             try {
@@ -88,7 +57,6 @@ private final ProjetService projetService;
             }
         }
 
-        // Enregistrer le devis
         System.out.println("Souhaitez-vous enregistrer le devis ? (true/false) : ");
         boolean accepteEnregistrer = sc.nextBoolean();
 
@@ -99,4 +67,40 @@ private final ProjetService projetService;
             System.out.println("-- Fin du projet --");
         }
     }
+
+
+
+    public void DisplayAllDevis() {
+        DevisService devisService = new DevisService();
+        List<Devis> devisList = devisService.DisplayAllDevis();
+
+        if (devisList.isEmpty()) {
+            System.out.println("Aucun devis trouvé.");
+            return;
+        }
+
+        devisList.forEach(devis -> {
+            System.out.printf("Id devis : %d, Montant estimé : %.2f €, Date d'émission : %s, Date de validation : %s, Accepté : %s%n",
+                    devis.getId(),
+                    devis.getMontantEstimate(),
+                    devis.getDateEmission(),
+                    devis.getDateValide(),
+                    devis.isAccepte() ? "Oui" : "Non");
+        });
+
+
+        System.out.println("vous voulez refuser un devis ? (true/false) : ");
+        boolean accepteDevis = sc.nextBoolean();
+
+        if (accepteDevis) {
+            System.out.println("Entrer  devis id du projet  : ");
+            int idDevis = sc.nextInt();
+            devisService.UpdateAccepteDevis(idDevis);
+            System.out.println("-- Devis refused --");
+
+        }
+
+
+    }
+
 }
