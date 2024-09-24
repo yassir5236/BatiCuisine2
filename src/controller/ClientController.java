@@ -3,6 +3,7 @@
 package controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import model.Client;
@@ -49,7 +50,7 @@ public class ClientController {
         } while (!isValidPhoneNumber(telephone));
 
         System.out.println("Est ce que le client est Professionel  (true/false)?");
-        boolean estProfessionnel = scanner.nextBoolean();
+        boolean estProfessionnel = scanner.nextLine().equals("true");
 
         Client client = new Client(nom, adresse, telephone, estProfessionnel);
         int idNewClient = clientService.addClient(client);
@@ -59,10 +60,14 @@ public class ClientController {
 
         if (estProfessionnel) {
             System.out.println("prendre en compte que ce client est professionnel vous voulez appliquer des remises ? (true/false)");
-            boolean choix = scanner.nextBoolean();
+            boolean choix = scanner.nextLine().equals("true");
             if (choix) {
+                double clientRemise;
+                do{
                 System.out.println("Entrer remise pour ce client en (%)");
-                double clientRemise = scanner.nextDouble();
+                 clientRemise = scanner.nextDouble();
+
+                }while(!scanner.hasNextDouble());
                 clientService.AddRemise(clientRemise, clientFound.getId());
             }
         }
@@ -94,7 +99,7 @@ public class ClientController {
         } while (!isValidPhoneNumber(telephone));
 
         System.out.println("Est ce que le client est Professionel (true/false)?");
-        boolean estProfessionnel = scanner.nextBoolean();
+        boolean estProfessionnel = scanner.nextLine().equals("true");
 
         Client client = new Client(id, nom, adresse, telephone, estProfessionnel);
         boolean updated = clientService.updateClient(client);
@@ -150,8 +155,12 @@ public class ClientController {
 
     public int recherchClient() {
         System.out.println("--- Recherche de client existant ---");
-        System.out.println("Entrez le nom du client : ");
-        String nom = scanner.nextLine();
+
+
+            System.out.println("Entrez le nom du client : ");
+            String nom = scanner.nextLine();
+
+
 
         Client client = clientService.rechercheClient(nom);
         if (client != null) {
@@ -162,14 +171,26 @@ public class ClientController {
 
             if (client.isEstProfessionnel()) {
                 System.out.println("prendre en compte que ce client est professionnel vous voulez appliquer des remises ? (true/false)");
-                boolean choix = scanner.nextBoolean();
+                boolean choix = scanner.nextLine().equals("true");
                 if (choix) {
-                    System.out.println("Entrer remise pour ce client en (%)");
-                    double clientRemise = scanner.nextDouble();
+                    double clientRemise = -1;
+                    do{
+                        System.out.println("Entrer remise pour ce client en (%)");
+                        while (!scanner.hasNextDouble()){
+                            System.out.println("Entrée invalide. Veuillez entrer un nombre valide pour la remise.");
+                            scanner.next();
+                        }
+
+                        clientRemise = scanner.nextDouble();
+
+                    }while(clientRemise<-1);
+
                     clientService.AddRemise(clientRemise, client.getId());
                 }
             }
+            return  client.getId();
+
         }
-        return client.getId();
+        return -1;
     }
 }

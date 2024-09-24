@@ -48,6 +48,11 @@ public class Projet {
         this.etatProjet = etatProjet;
     }
 
+    public Projet(int id) {
+        this.id = id;
+
+    }
+
     public Projet( String nom,double surface ,Client client) {
         this.nomProjet = nom;
         this.surface = surface;

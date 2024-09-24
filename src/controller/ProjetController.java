@@ -3,15 +3,9 @@
 
 package controller;
 
-import model.Client;
+import model.*;
 import model.Enum.EtatProjet;
-import model.MainOeuvre;
-import model.Materiau;
-import model.Projet;
-import service.ClientService;
-import service.MainOeuvreService;
-import service.MateriauService;
-import service.ProjetService;
+import service.*;
 
 import java.util.*;
 
@@ -23,6 +17,8 @@ public class ProjetController {
     private final MateriauService materiauService;
     private final MainOeuvreService mainOeuvreService;
     private final DevisController devisController;
+    private final DevisService devisService;
+
 
     public ProjetController() {
         this.projetService = new ProjetService();
@@ -32,6 +28,7 @@ public class ProjetController {
         this.materiauService = new MateriauService();
         this.mainOeuvreService=new MainOeuvreService();
         this.devisController=new DevisController();
+        this.devisService=new DevisService();
     }
 
     public int  addProjet(int idClient) {
@@ -152,7 +149,15 @@ public class ProjetController {
         }
 
         projetService.updateCoutTotal(coutTotalFinal, idProjet);
-        devisController.EnregistrerDevis(coutTotalFinal, idProjet);
+
+
+       Devis devis = devisService.DisplayAllDevis().stream().filter(n->n.getProjet().getId() == idProjet ).findFirst().orElse(null);
+
+
+if(devis == null) {
+    devisController.EnregistrerDevis(coutTotalFinal, idProjet);
+
+}
     }
 
 
