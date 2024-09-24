@@ -1,4 +1,4 @@
-package dao;
+package repository.dao;
 
 
 import model.Enum.TypeComposant;

@@ -1,99 +1,13 @@
-//package controller;
-//
-//import model.Client;
-//import model.Enum.EtatProjet;
-//import model.MainOeuvre;
-//import model.Projet;
-//import service.ClientService;
-//import service.ProjetService;
-//
-//import java.util.List;
-//import java.util.Scanner;
-//
-//import static java.lang.String.valueOf;
-//
-//public class ProjetController {
-//    private final ProjetService projetService;
-//    private final Scanner scanner;
-//    private final MateriauController materiauController;
-//    private double coutTotal;
-//    private final MainOuvreController mainOuvreController;
-//
-//    public ProjetController() {
-//        this.projetService = new ProjetService();
-//        this.scanner = new Scanner(System.in);
-//        this.materiauController = new MateriauController();
-//        this.mainOuvreController= new MainOuvreController();
-//    }
-//
-//    public void addProjet(int idClient) {
-//
-//
-//        System.out.println("--- Création d'un Nouveau Projet-- \n");
-//        System.out.println("Entrez le nom du projet:");
-//        String nomProjet = scanner.nextLine();
-//
-//        System.out.println("Entrez la marge bénéficiaire pour ce  projet:");
-//        double margeBeneficiaire = scanner.nextDouble();
-//
-//        scanner.nextLine();
-//        System.out.println("Entrez l'Etat de ce projet: (EN_COURS, TERMINE , ANNULE)");
-//        String etatProjetStr = scanner.nextLine();
-//        EtatProjet etatProjet =EtatProjet.valueOf(etatProjetStr.toUpperCase());
-//
-//        System.out.println("Entrez la surface de la cuisine (en m²):");
-//        double surface = scanner.nextDouble();
-//
-//        ClientService clientService = new ClientService();
-//        Client client = clientService.getClient(idClient);
-//        if (client == null) {
-//            System.out.println("Erreur: Client non trouvé !");
-//
-//        }
-//
-//
-//        Projet projet = new Projet( nomProjet, margeBeneficiaire,  etatProjet,  coutTotal,  client , surface);
-//
-//        int idProjet = projetService.addProjet(projet);
-//
-//
-//
-//        System.out.println("--- Ajout des matériaux---\n");
-//
-//         materiauController.addMateriau(idProjet);
-//        mainOuvreController.addMainOuvre(idProjet);
-//
-//
-//
-//
-//
-//
-//
-//
-//    }
-//
-//}
-
-
-
 
 
 
 package controller;
 
-import model.Client;
+import model.*;
 import model.Enum.EtatProjet;
-import model.MainOeuvre;
-import model.Materiau;
-import model.Projet;
-import service.ClientService;
-import service.MainOeuvreService;
-import service.MateriauService;
-import service.ProjetService;
+import service.*;
 
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ProjetController {
     private final ProjetService projetService;
@@ -103,6 +17,8 @@ public class ProjetController {
     private final MateriauService materiauService;
     private final MainOeuvreService mainOeuvreService;
     private final DevisController devisController;
+    private final DevisService devisService;
+
 
     public ProjetController() {
         this.projetService = new ProjetService();
@@ -112,6 +28,7 @@ public class ProjetController {
         this.materiauService = new MateriauService();
         this.mainOeuvreService=new MainOeuvreService();
         this.devisController=new DevisController();
+        this.devisService=new DevisService();
     }
 
     public int  addProjet(int idClient) {
@@ -175,7 +92,13 @@ public class ProjetController {
 
 
 
-    public void calculerCoutTotalDuProjet(int idProjet ,double remise) {
+
+
+
+    public void calculerCoutTotalDuProjet(int idProjet, double remise) {
+        Map<String, Double> resultMap = new HashMap<>();
+
+
         Projet projet = projetService.selectProjetById(idProjet);
         if (projet == null) {
             System.out.println("Le projet avec l'ID spécifié n'existe pas.");
@@ -187,14 +110,14 @@ public class ProjetController {
 
         double coutTotalMateriaux = materiaux.stream()
                 .mapToDouble(materiau -> {
-                    double coutMateriau = (materiau.getQuantite() * materiau.getCoutUnitaire()) + materiau.getCoutTransport();
+                    double coutMateriau = (materiau.getQuantite() * materiau.getCoutUnitaire()) * materiau.getCoefficientQuantite() + materiau.getCoutTransport();
                     return coutMateriau * (1 + materiau.getTauxTVA() / 100);
                 })
                 .sum();
 
         double coutTotalMainOeuvre = mainOeuvres.stream()
                 .mapToDouble(mainOeuvre -> {
-                    double coutMainOeuvre = mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail();
+                    double coutMainOeuvre = mainOeuvre.getTauxHoraire() * mainOeuvre.getHeuresTravail() * mainOeuvre.getProductiviteOuvrier();
                     return coutMainOeuvre * (1 + mainOeuvre.getTauxTVA() / 100);
                 })
                 .sum();
@@ -206,24 +129,36 @@ public class ProjetController {
         double coutTotalFinal = coutTotalAvantMarge + montantMarge;
         double coutTotalFinalRemise = coutTotalFinal;
 
-        if ( remise > 0) {
+        if (remise > 0) {
             coutTotalFinalRemise = coutTotalFinal - (coutTotalFinal * remise / 100);
         }
 
-        System.out.printf("Coût total avant marge : %.2f €\n", coutTotalAvantMarge);
-        System.out.printf("Marge bénéficiaire (%.2f%%) : %.2f €\n", margeBeneficiaire, montantMarge);
 
-        if(remise > 0){
-            System.out.printf("Valeur de la remise (%.2f%%) : %.2f €\n", remise, coutTotalFinal * remise / 100);
+        resultMap.put("Coût total avant marge", coutTotalAvantMarge);
+        resultMap.put("Marge bénéficiaire", montantMarge);
+        if (remise > 0) {
+            resultMap.put("Valeur de la remise", coutTotalFinal * remise / 100);
+        }
+        resultMap.put("Coût total final", coutTotalFinalRemise);
 
+
+
+        for (String key : resultMap.keySet()) {
+            Double value = resultMap.get(key);
+            System.out.printf("%s : %.2f €\n", key, value);
         }
 
-        System.out.printf("**Coût total final du projet : %.2f €**\n", coutTotalFinalRemise);
-        projetService.updateCoutTotal(coutTotalFinal,idProjet);
+        projetService.updateCoutTotal(coutTotalFinal, idProjet);
 
-        devisController.EnregistrerDevis(coutTotalFinal,idProjet);
+
+       Devis devis = devisService.DisplayAllDevis().stream().filter(n->n.getProjet().getId() == idProjet ).findFirst().orElse(null);
+
+
+if(devis == null) {
+    devisController.EnregistrerDevis(coutTotalFinal, idProjet);
+
+}
     }
-
 
 
 

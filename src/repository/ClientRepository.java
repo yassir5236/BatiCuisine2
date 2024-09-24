@@ -16,14 +16,14 @@ public interface ClientRepository {
 
     int insertClient(Client client) throws SQLException;
 
-    Client selectClient(int id) throws SQLException;
+    Optional<Client> selectClient(int id) throws SQLException;
 
-    List<Client> selectAllClients() throws SQLException;
+    Optional <List<Client>> selectAllClients() throws SQLException;
 
     boolean updateClient(Client client) throws SQLException;
 
     boolean deleteClient(int id) throws SQLException;
 
-    Client rechercheClient(String nom) throws SQLException;
+    Optional<Client> rechercheClient(String nom) throws SQLException;
 
 }

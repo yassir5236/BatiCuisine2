@@ -1,6 +1,7 @@
-package dao;
+package repository.dao;
 
 import model.Devis;
+import model.Enum.EtatProjet;
 import model.Projet;
 import repository.DevisRepository;
 import utils.DatabaseConnection;
@@ -50,12 +51,19 @@ public class DevisDAO implements DevisRepository {
                 LocalDate dateEmission = rs.getDate("date_emission").toLocalDate();
                 LocalDate dateValidate = rs.getDate("date_validate").toLocalDate();
 
+
+                Projet projet = new Projet(rs.getInt("projet_id"));
+
+
+
+
                 Devis devis = new Devis(
                         rs.getInt("id"),
                         rs.getDouble("montant_estimate"),
                         dateEmission,
                         dateValidate,
-                        rs.getBoolean("accepte")
+                        rs.getBoolean("accepte"),
+                        projet
                 );
                 devisList.add(devis);
             }

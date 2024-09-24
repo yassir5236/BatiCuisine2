@@ -1,11 +1,13 @@
 package service;
 
-import dao.ClientDAO;
+import repository.dao.ClientDAO;
 import model.Client;
 import service.interfaces.IClientService;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import  java.util.Optional;
 
 
 public class ClientService implements IClientService {
@@ -37,8 +39,8 @@ public class ClientService implements IClientService {
 
     @Override
     public Client getClient(int id) {
-        try {
-            return clientDAO.selectClient(id);
+        try {Optional<Client> client = clientDAO.selectClient(id);
+            return client.orElse(new Client());
         } catch (SQLException e) {
             System.out.println("Error fetching client with ID " + id + ": " + e.getMessage());
             return null;
@@ -57,8 +59,9 @@ public class ClientService implements IClientService {
 
     @Override
     public List<Client> getAllClients() {
-        try {
-            return clientDAO.selectAllClients();
+        try { Optional <List<Client>> client = clientDAO.selectAllClients();
+            return client.orElse(new ArrayList<>());
+
         } catch (SQLException e) {
             System.out.println("Error fetching all clients: " + e.getMessage());
             return null;
@@ -68,7 +71,9 @@ public class ClientService implements IClientService {
     @Override
     public Client rechercheClient(String nom){
         try {
-            return clientDAO.rechercheClient(nom);
+            Optional<Client> client =  clientDAO.rechercheClient(nom);
+            return client.orElse(null);
+
         } catch (SQLException e) {
             System.out.println("Error fetching recherche client: " + e.getMessage());
             return null;

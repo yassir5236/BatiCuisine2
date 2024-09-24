@@ -225,9 +225,15 @@ public class Main {
     }
 
     private static void chercherClient(Scanner sc) {
-        int idClient = clientController.recherchClient();
+        int idClient =-1;
+
+        idClient = clientController.recherchClient();
+
+        if(idClient == -1) {
+            return;
+        }
         System.out.print("Souhaitez-vous continuer avec ce client ? (true/false) : ");
-        if (sc.nextBoolean()) {
+        if (sc.nextLine().equalsIgnoreCase("true")) {
 
             int idProjet = projetController.addProjet(idClient);
             coutTotalController.coutTotal(idProjet);
@@ -239,7 +245,7 @@ public class Main {
     private static void ajouterNouveauClient(Scanner sc) {
         int idNewClient = clientController.addClient();
         System.out.print("Souhaitez-vous continuer avec ce client ? (true/false) : ");
-        if (sc.nextBoolean()) {
+        if (sc.nextLine().equalsIgnoreCase("true")) {
             int idProjet = projetController.addProjet(idNewClient);
             coutTotalController.coutTotal(idProjet);
         } else {

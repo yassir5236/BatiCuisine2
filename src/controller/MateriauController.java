@@ -64,9 +64,7 @@ public class MateriauController {
             return;
         }
 
-//        System.out.println("Entrez l'ID du projet:");
-//        int projetId = scanner.nextInt();
-//        scanner.nextLine();
+
 
         int projetId = idProjet;
 
@@ -166,7 +164,7 @@ public class MateriauController {
         materiauService.ajouterMateriau(materiauDto);
         System.out.println("Materiau ajouté avec succès.\n");
         System.out.println("voulez vous inserer un autre materiau (true/false) ?");
-        boolean choix = scanner.nextBoolean();
+        boolean choix = scanner.nextLine().equalsIgnoreCase("true");
         scanner.nextLine();
         if (choix) {
             addMateriau(idProjet);

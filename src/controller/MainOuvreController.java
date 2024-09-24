@@ -1,6 +1,6 @@
 //package controller;
 //
-//import dao.MainOeuvreDAO;
+//import repository.dao.MainOeuvreDAO;
 //import model.Client;
 //import model.Enum.TypeComposant;
 //import model.MainOeuvre;

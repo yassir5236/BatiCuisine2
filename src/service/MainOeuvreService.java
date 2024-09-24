@@ -1,12 +1,10 @@
 package service;
 
-import dao.MainOeuvreDAO;
-import dao.ProjetDAO;
+import repository.dao.MainOeuvreDAO;
+import repository.dao.ProjetDAO;
 import model.MainOeuvre;
-import model.Materiau;
 import model.Projet;
 import model.dto.MainDoeuvreDto;
-import model.dto.MateriauDto;
 import service.interfaces.IMainOeuvreService;
 
 import java.util.List;
@@ -37,7 +35,6 @@ public class MainOeuvreService implements IMainOeuvreService {
     }
 
     public List<MainOeuvre> getMainOeuvresByProjet(int projetId) {
-        // Simule la récupération de toutes les main-d'œuvre associées à un projet
         return mainOeuvreDAO.selectAllMainOeuvres().stream()
                 .filter(mainOeuvre -> mainOeuvre.getProjet().getId() == projetId)
                 .collect(Collectors.toList());

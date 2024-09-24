@@ -48,6 +48,11 @@ public class Projet {
         this.etatProjet = etatProjet;
     }
 
+    public Projet(int id) {
+        this.id = id;
+
+    }
+
     public Projet( String nom,double surface ,Client client) {
         this.nomProjet = nom;
         this.surface = surface;
@@ -60,6 +65,15 @@ public class Projet {
         this.nomProjet = nom;
         this.surface = surface;
         this.margeBeneficiaire= margeBeneficiaire;
+        this.client=client;
+    }
+
+    public Projet(int id ,  String nom,double surface , double margeBeneficiaire,double coutTotal,Client client) {
+        this.id= id;
+        this.nomProjet = nom;
+        this.surface = surface;
+        this.margeBeneficiaire= margeBeneficiaire;
+        this.coutTotal = coutTotal;
         this.client=client;
     }
 

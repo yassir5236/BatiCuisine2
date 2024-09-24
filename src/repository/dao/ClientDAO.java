@@ -1,4 +1,4 @@
-package dao;
+package repository.dao;
 
 
 
@@ -9,6 +9,7 @@ import utils.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ClientDAO implements ClientRepository {
 
@@ -33,7 +34,6 @@ public class ClientDAO implements ClientRepository {
             preparedStatement.setString(2, client.getAdresse());
             preparedStatement.setString(3, client.getTelephone());
             preparedStatement.setBoolean(4, client.isEstProfessionnel());
-//            preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -44,7 +44,7 @@ public class ClientDAO implements ClientRepository {
     }
 
     @Override
-    public Client selectClient(int id) throws SQLException {
+    public Optional<Client> selectClient(int id) throws SQLException {
         Client client = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CLIENT_BY_ID)) {
             preparedStatement.setInt(1, id);
@@ -57,13 +57,15 @@ public class ClientDAO implements ClientRepository {
                         rs.getString("telephone"),
                         rs.getBoolean("est_professionnel")
                 );
+                return Optional.of(client);
+
             }
         }
-        return client;
+        return Optional.empty();
     }
 
     @Override
-    public List<Client> selectAllClients() throws SQLException {
+    public Optional <List<Client>> selectAllClients() throws SQLException {
         List<Client> clients = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_CLIENTS)) {
             ResultSet rs = preparedStatement.executeQuery();
@@ -77,7 +79,7 @@ public class ClientDAO implements ClientRepository {
                 ));
             }
         }
-        return clients;
+        return clients.isEmpty() ? Optional.empty() : Optional.of(clients);
     }
 
     @Override
@@ -106,7 +108,7 @@ public class ClientDAO implements ClientRepository {
 
 
     @Override
-    public Client rechercheClient(String nom) throws SQLException {
+    public Optional<Client> rechercheClient(String nom) throws SQLException {
         String query = "select * from client where nom = ?";
         Client client = null;
         try(PreparedStatement ps = connection.prepareStatement(query)){
@@ -122,6 +124,7 @@ public class ClientDAO implements ClientRepository {
                         rs.getBoolean("est_professionnel")
 
                 );
+                return Optional.of(client);
             }else{
                 System.out.println("Client n'existe pas !");
             }
@@ -130,7 +133,7 @@ public class ClientDAO implements ClientRepository {
             e.printStackTrace();
 
         }
-        return client;
+        return Optional.empty();
     }
 
 

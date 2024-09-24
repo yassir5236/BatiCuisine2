@@ -58,7 +58,7 @@ private final ProjetService projetService;
         }
 
         System.out.println("Souhaitez-vous enregistrer le devis ? (true/false) : ");
-        boolean accepteEnregistrer = sc.nextBoolean();
+        boolean accepteEnregistrer = sc.nextLine().equalsIgnoreCase("true");
 
         if (accepteEnregistrer) {
             Projet projet = projetService.selectProjetById(idProjet);
@@ -89,16 +89,34 @@ private final ProjetService projetService;
         });
 
 
-        System.out.println("vous voulez refuser un devis ? (true/false) : ");
-        boolean accepteDevis = sc.nextBoolean();
+        boolean accepteDevis = false ;
+        boolean responseValide = false;
 
-        if (accepteDevis) {
-            System.out.println("Entrer  devis id du projet  : ");
-            int idDevis = sc.nextInt();
-            devisService.UpdateAccepteDevis(idDevis);
-            System.out.println("-- Devis refused --");
+        do {
+            System.out.println("vous voulez refuser un devis ? (true/false) : ");
+            String acceptedDevis = sc.nextLine();
+            if (acceptedDevis.equals("true")) {
+                accepteDevis = true;
+                responseValide = true;
+            } else if (acceptedDevis.equals("false")) {
+                accepteDevis = false;
+                responseValide = true;
 
-        }
+
+            }
+            }
+
+            while (!responseValide) ;
+
+            if (accepteDevis) {
+                System.out.println("Entrer  devis id du projet  : ");
+                int idDevis = sc.nextInt();
+                devisService.UpdateAccepteDevis(idDevis);
+                System.out.println("-- Devis refused --");
+
+            }
+
+
 
 
     }

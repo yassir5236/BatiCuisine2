@@ -1,8 +1,7 @@
 package service;
 
-import dao.MateriauDAO;
-import dao.ProjetDAO;
-import dao.MateriauDAO;
+import repository.dao.MateriauDAO;
+import repository.dao.ProjetDAO;
 import model.Materiau;
 import model.Projet;
 import model.dto.MateriauDto;
