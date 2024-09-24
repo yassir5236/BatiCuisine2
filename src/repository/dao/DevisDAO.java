@@ -1,7 +1,6 @@
-package dao;
+package repository.dao;
 
 import model.Devis;
-import model.Projet;
 import repository.DevisRepository;
 import utils.DatabaseConnection;
 

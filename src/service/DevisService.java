@@ -1,6 +1,6 @@
 package service;
 
-import dao.DevisDAO;
+import repository.dao.DevisDAO;
 import model.Devis;
 import service.interfaces.IDevisService;
 

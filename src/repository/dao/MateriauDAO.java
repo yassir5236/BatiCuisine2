@@ -1,4 +1,4 @@
-    package dao;
+    package repository.dao;
 
     import model.Materiau;
     import model.Enum.TypeComposant;
@@ -34,7 +34,6 @@
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_MATERIAU_SQL)) {
                 preparedStatement.setString(1, materiau.getNom()); // Assurez-vous que getNom() renvoie une chaîne
-    //            preparedStatement.setString(2, materiau.getTypeComposant().name().toLowerCase()); // Convertir l'énum en chaîne et gérer les valeurs null
                 preparedStatement.setString(2, materiau.getTypeComposant().name());
 
                 preparedStatement.setDouble(3, materiau.getTauxTVA()); // Assurez-vous que getTauxTVA() renvoie un double
@@ -47,29 +46,7 @@
             }
         }
 
-//    @Override
-//    public Materiau selectMateriau(int id) throws SQLException {
-//        Materiau materiau = null;
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MATERIAU_BY_ID)) {
-//            preparedStatement.setInt(1, id);
-//            ResultSet rs = preparedStatement.executeQuery();
-//
-//            if (rs.next()) {
-//                materiau = new Materiau(
-//                        rs.getInt("id"),
-//                        rs.getString("nom"),
-//                        TypeComposant.valueOf(rs.getString("type_composant")),
-//                        rs.getDouble("taux_tva"),
-//                        new Projet(rs.getInt("projet_id")), // Assuming you have a Projet object
-//                        rs.getDouble("cout_unitaire"),
-//                        rs.getDouble("quantite"),
-//                        rs.getDouble("cout_transport"),
-//                        rs.getDouble("coefficient_quantite")
-//                );
-//            }
-//        }
-//        return materiau;
-//    }
+
 
         public List<Materiau> selectAllMateriaux() {
             List<Materiau> materiaux = new ArrayList<>();
@@ -105,31 +82,4 @@
             return materiaux;
         }
 
-//    @Override
-//    public boolean updateMateriau(Materiau materiau) throws SQLException {
-//        boolean rowUpdated;
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MATERIAU_SQL)) {
-//            preparedStatement.setString(1, materiau.getNom());
-//            preparedStatement.setString(2, materiau.getTypeComposant().name());
-//            preparedStatement.setDouble(3, materiau.getTauxTVA());
-//            preparedStatement.setInt(4, materiau.getProjet().getId());
-//            preparedStatement.setDouble(5, materiau.getCoutUnitaire());
-//            preparedStatement.setDouble(6, materiau.getQuantite());
-//            preparedStatement.setDouble(7, materiau.getCoutTransport());
-//            preparedStatement.setDouble(8, materiau.getCoefficientQuantite());
-//            preparedStatement.setInt(9, materiau.getId());
-//            rowUpdated = preparedStatement.executeUpdate() > 0;
-//        }
-//        return rowUpdated;
-//    }
-
-//    @Override
-//    public boolean deleteMateriau(int id) throws SQLException {
-//        boolean rowDeleted;
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_MATERIAU_SQL)) {
-//            preparedStatement.setInt(1, id);
-//            rowDeleted = preparedStatement.executeUpdate() > 0;
-//        }
-//        return rowDeleted;
-//    }
 }

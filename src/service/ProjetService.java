@@ -1,6 +1,6 @@
 package service;
 
-import dao.ProjetDAO;
+import repository.dao.ProjetDAO;
 import model.Projet;
 import service.interfaces.IProjetService;
 

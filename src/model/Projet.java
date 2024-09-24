@@ -63,6 +63,15 @@ public class Projet {
         this.client=client;
     }
 
+    public Projet(int id ,  String nom,double surface , double margeBeneficiaire,double coutTotal,Client client) {
+        this.id= id;
+        this.nomProjet = nom;
+        this.surface = surface;
+        this.margeBeneficiaire= margeBeneficiaire;
+        this.coutTotal = coutTotal;
+        this.client=client;
+    }
+
 
     // Getters and Setters
     public int getId() {
